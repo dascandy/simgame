@@ -6,3 +6,5 @@
 
 
 include(CMakeAddon.txt)
+add_subdirectory(build)
+add_subdirectory(src)
