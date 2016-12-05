@@ -19,9 +19,9 @@ Model::Model(const std::string& str) {
     if (p[0] == "usemtl") {
       mat = Material::Get(p[1].c_str());
     } else if (p[0] == "v") {
-      positions.emplace_back(atof(p[1].c_str()), atof(p[2].c_str()), atof(p[3].c_str()));
+      positions.emplace_back(strtof(p[1].c_str(), NULL), strtof(p[2].c_str(), NULL), strtof(p[3].c_str(), NULL));
     } else if (p[0] == "vn") {
-      normals.emplace_back(atof(p[1].c_str()), atof(p[2].c_str()), atof(p[3].c_str()));
+      normals.emplace_back(strtof(p[1].c_str(), NULL), strtof(p[2].c_str(), NULL), strtof(p[3].c_str(), NULL));
     } else if (p[0] == "f") {
       while (p.size() - 1 >= 3) {
         AddFace(mat, positions, normals, p[1], p[p.size() - 2], p[p.size() - 1]);

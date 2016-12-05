@@ -22,16 +22,16 @@ Material::Material(const std::string& str) {
           name = s;
           break;
         case Ambient:
-          ambient[index++] = atof(s.c_str());
+          ambient[index++] = strtof(s.c_str(), NULL);
           break;
         case Diffuse:
-          diffuse[index++] = atof(s.c_str());
+          diffuse[index++] = strtof(s.c_str(), NULL);
           break;
         case Specular:
-          specular[index++] = atof(s.c_str());
+          specular[index++] = strtof(s.c_str(), NULL);
           break;
         case SpecularExponent:
-          specExponent = atof(s.c_str());
+          specExponent = strtof(s.c_str(), NULL);
           break;
       }
     }
