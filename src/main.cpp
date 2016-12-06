@@ -2,15 +2,18 @@
 #include "Model.h"
 #include "Scene.h"
 #include "Window.h"
+#include <atomic>
 #include <GLAD/glad.h>
-//#include <direct.h>
+
+std::atomic<bool> end(false);
 
 int main() {
-//  _chdir("C:\\Users\\pebi\\git\\simgame");
   class MyScene : public Scene {
   public:
     void Update(size_t frameno) override {
       printf("update %d\n", (int)frameno++);
+      if (frameno == 300) 
+        end = true;
     }
     void Render() override {
       glClearColor(1, 0, 1, 0);
@@ -21,7 +24,7 @@ int main() {
     }
   };
   std::shared_ptr<Scene> myScene = std::make_shared<MyScene>();
-  Window* win = new Window("TestWindow", 640, 480, myScene);
-//  Sleep(5000);
+  Window win("TestWindow", 640, 480, myScene);
+  while (!end) {}
 }
 
