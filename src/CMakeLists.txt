@@ -12,9 +12,15 @@ add_executable(${PROJECT_NAME}
   Material.h
   Model.cpp
   Model.h
+  Object.cpp
+  Object.h
+  Scene.h
   StringUtils.cpp
   StringUtils.h
   Vertex.h
+  Window.cpp
+  Window.h
+  glad.c
   main.cpp
 )
 
@@ -23,3 +29,4 @@ target_include_directories(${PROJECT_NAME}
     .
 )
 
+include(CMakeAddon.txt)

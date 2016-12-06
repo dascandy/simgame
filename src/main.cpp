@@ -3,14 +3,14 @@
 #include "Scene.h"
 #include "Window.h"
 #include <GLAD/glad.h>
-#include <direct.h>
+//#include <direct.h>
 
 int main() {
-  _chdir("C:\\Users\\pebi\\git\\simgame");
+//  _chdir("C:\\Users\\pebi\\git\\simgame");
   class MyScene : public Scene {
   public:
     void Update(size_t frameno) override {
-      printf("update %d\n", frameno++);
+      printf("update %d\n", (int)frameno++);
     }
     void Render() override {
       glClearColor(1, 0, 1, 0);
@@ -22,6 +22,6 @@ int main() {
   };
   std::shared_ptr<Scene> myScene = std::make_shared<MyScene>();
   Window* win = new Window("TestWindow", 640, 480, myScene);
-  Sleep(5000);
+//  Sleep(5000);
 }
 

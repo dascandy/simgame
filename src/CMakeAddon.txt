@@ -1,0 +1,11 @@
+target_link_libraries(${PROJECT_NAME}
+  PUBLIC
+    -lglfw
+    -ldl
+    -pthread
+)
+
+target_compile_options(${PROJECT_NAME}
+  PUBLIC
+    -pthread
+)
