@@ -9,6 +9,7 @@
 class Window {
 public:
   Window(const std::string& name, size_t x, size_t y, std::shared_ptr<Scene> scene);
+  void Close();
   ~Window();
 private:
   std::thread myThread;

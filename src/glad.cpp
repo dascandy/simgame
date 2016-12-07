@@ -35,10 +35,10 @@ PFNWGLGETPROCADDRESSPROC_PRIVATE gladGetProcAddressPtr;
 static
 int open_gl(void) {
     libGL = LoadLibraryW(L"opengl32.dll");
-    if(libGL != NULL) {
+    if(libGL != nullptr) {
         gladGetProcAddressPtr = (PFNWGLGETPROCADDRESSPROC_PRIVATE)GetProcAddress(
                 libGL, "wglGetProcAddress");
-        return gladGetProcAddressPtr != NULL;
+        return gladGetProcAddressPtr != nullptr;
     }
 
     return 0;
@@ -46,9 +46,9 @@ int open_gl(void) {
 
 static
 void close_gl(void) {
-    if(libGL != NULL) {
+    if(libGL != nullptr) {
         FreeLibrary(libGL);
-        libGL = NULL;
+        libGL = nullptr;
     }
 }
 #else
@@ -77,13 +77,13 @@ int open_gl(void) {
     for(index = 0; index < (sizeof(NAMES) / sizeof(NAMES[0])); index++) {
         libGL = dlopen(NAMES[index], RTLD_NOW | RTLD_GLOBAL);
 
-        if(libGL != NULL) {
+        if(libGL != nullptr) {
 #ifdef __APPLE__
             return 1;
 #else
             gladGetProcAddressPtr = (PFNGLXGETPROCADDRESSPROC_PRIVATE)dlsym(libGL,
                 "glXGetProcAddressARB");
-            return gladGetProcAddressPtr != NULL;
+            return gladGetProcAddressPtr != nullptr;
 #endif
         }
     }
@@ -93,24 +93,24 @@ int open_gl(void) {
 
 static
 void close_gl() {
-    if(libGL != NULL) {
+    if(libGL != nullptr) {
         dlclose(libGL);
-        libGL = NULL;
+        libGL = nullptr;
     }
 }
 #endif
 
 static
 void* get_proc(const char *namez) {
-    void* result = NULL;
-    if(libGL == NULL) return NULL;
+    void* result = nullptr;
+    if(libGL == nullptr) return nullptr;
 
 #ifndef __APPLE__
-    if(gladGetProcAddressPtr != NULL) {
+    if(gladGetProcAddressPtr != nullptr) {
         result = gladGetProcAddressPtr(namez);
     }
 #endif
-    if(result == NULL) {
+    if(result == nullptr) {
 #ifdef _WIN32
         result = (void*)GetProcAddress(libGL, namez);
 #else
@@ -141,9 +141,9 @@ struct gladGLversionStruct GLVersion;
 static int max_loaded_major;
 static int max_loaded_minor;
 
-static const char *exts = NULL;
+static const char *exts = nullptr;
 static int num_exts_i = 0;
-static const char **exts_i = NULL;
+static const char **exts_i = nullptr;
 
 static int get_exts(void) {
 #ifdef _GLAD_IS_SOME_NEW_VERSION
@@ -160,7 +160,7 @@ static int get_exts(void) {
             exts_i = (const char **)realloc((void *)exts_i, num_exts_i * sizeof *exts_i);
         }
 
-        if (exts_i == NULL) {
+        if (exts_i == nullptr) {
             return 0;
         }
 
@@ -173,9 +173,9 @@ static int get_exts(void) {
 }
 
 static void free_exts(void) {
-    if (exts_i != NULL) {
+    if (exts_i != nullptr) {
         free((char **)exts_i);
-        exts_i = NULL;
+        exts_i = nullptr;
     }
 }
 
@@ -187,13 +187,13 @@ static int has_ext(const char *ext) {
         const char *loc;
         const char *terminator;
         extensions = exts;
-        if(extensions == NULL || ext == NULL) {
+        if(extensions == nullptr || ext == nullptr) {
             return 0;
         }
 
         while(1) {
             loc = strstr(extensions, ext);
-            if(loc == NULL) {
+            if(loc == nullptr) {
                 return 0;
             }
 
@@ -1702,7 +1702,7 @@ static void find_coreGL(void) {
         "OpenGL ES-CM ",
         "OpenGL ES-CL ",
         "OpenGL ES ",
-        NULL
+        nullptr
     };
 
     version = (const char*) glGetString(GL_VERSION);
@@ -1752,8 +1752,8 @@ static void find_coreGL(void) {
 int gladLoadGLLoader(GLADloadproc load) {
 	GLVersion.major = 0; GLVersion.minor = 0;
 	glGetString = (PFNGLGETSTRINGPROC)load("glGetString");
-	if(glGetString == NULL) return 0;
-	if(glGetString(GL_VERSION) == NULL) return 0;
+	if(glGetString == nullptr) return 0;
+	if(glGetString(GL_VERSION) == nullptr) return 0;
 	find_coreGL();
 	load_GL_VERSION_1_0(load);
 	load_GL_VERSION_1_1(load);

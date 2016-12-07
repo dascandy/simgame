@@ -30,7 +30,7 @@ Window::Window(const std::string& name, size_t x, size_t y, std::shared_ptr<Scen
   glfwSetErrorCallback(error_callback);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-  GLFWwindow* window = glfwCreateWindow((int)x, (int)y, name.c_str(), NULL, NULL);
+  GLFWwindow* window = glfwCreateWindow((int)x, (int)y, name.c_str(), nullptr, nullptr);
   if (!window) {
     throw std::runtime_error("Cannot create window");
   }
@@ -56,15 +56,20 @@ Window::Window(const std::string& name, size_t x, size_t y, std::shared_ptr<Scen
     
     glfwSwapBuffers(window);
   }
-  glfwMakeContextCurrent(NULL);
+  myWindow = nullptr;
+  glfwMakeContextCurrent(nullptr);
   glfwDestroyWindow(window);
 })
 {
 }
 
+void Window::Close() {
+  glfwSetWindowShouldClose((GLFWwindow*)myWindow, GLFW_TRUE);
+}
+
 Window::~Window() {
   if (myWindow)
-    glfwSetWindowShouldClose((GLFWwindow*)myWindow, GLFW_TRUE);
+    Close();
   myThread.join();
 }
 

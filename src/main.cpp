@@ -25,6 +25,7 @@ int main() {
   };
   std::shared_ptr<Scene> myScene = std::make_shared<MyScene>();
   Window win("TestWindow", 640, 480, myScene);
-  while (!end) {}
+  win.Close();
+//  while (!end) {}
 }
 

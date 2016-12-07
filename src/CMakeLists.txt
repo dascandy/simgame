@@ -8,6 +8,8 @@ project(src)
 
 
 add_executable(${PROJECT_NAME}
+  Map.cpp
+  Map.h
   Material.cpp
   Material.h
   Model.cpp
@@ -20,7 +22,7 @@ add_executable(${PROJECT_NAME}
   Vertex.h
   Window.cpp
   Window.h
-  glad.c
+  glad.cpp
   main.cpp
 )
 
