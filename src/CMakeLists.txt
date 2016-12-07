@@ -8,6 +8,7 @@ project(src)
 
 
 add_executable(${PROJECT_NAME}
+  LockedQueue.h
   Map.cpp
   Map.h
   Material.cpp
@@ -17,6 +18,8 @@ add_executable(${PROJECT_NAME}
   Object.cpp
   Object.h
   Scene.h
+  ShaderProgram.cpp
+  ShaderProgram.h
   StringUtils.cpp
   StringUtils.h
   Vertex.h

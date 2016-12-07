@@ -26,8 +26,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
-Window::Window(const std::string& name, size_t x, size_t y, std::shared_ptr<Scene> newScene)
-: scene(newScene)
+Window::Window(const std::string& name, size_t x, size_t y, std::function<Scene*()> scene)
 {
   static GlfwInit init;
   staticWindow = this;
@@ -38,21 +37,22 @@ Window::Window(const std::string& name, size_t x, size_t y, std::shared_ptr<Scen
   if (!myWindow) {
     throw std::runtime_error("Cannot create window");
   }
+  glfwMakeContextCurrent((GLFWwindow*)myWindow);
+  gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+  glfwSetKeyCallback((GLFWwindow*)myWindow, key_callback);
+  glfwSwapInterval(1);
+  this->scene.reset(scene());
 }
 
 void Window::Close() {
   glfwSetWindowShouldClose((GLFWwindow*)myWindow, GLFW_TRUE);
 }
 
-void Window::SetScene(std::shared_ptr<Scene> newScene) {
-  Do([newScene, this]{ scene = newScene; });
+void Window::SetScene(std::function<Scene*()> newScene) {
+  Do([newScene, this]{ scene.reset(newScene()); });
 }
 
 void Window::MainLoop() {
-  glfwMakeContextCurrent((GLFWwindow*)myWindow);
-  gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-  glfwSetKeyCallback((GLFWwindow*)myWindow, key_callback);
-  glfwSwapInterval(1);
   uint64_t startTime = uint64_t(glfwGetTime() * 60);
   uint64_t timeCounter = startTime;
   while (!glfwWindowShouldClose((GLFWwindow*)myWindow)) {

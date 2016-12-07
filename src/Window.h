@@ -11,10 +11,10 @@
 
 class Window {
 public:
-  Window(const std::string& name, size_t x, size_t y, std::shared_ptr<Scene> scene);
+  Window(const std::string& name, size_t x, size_t y, std::function<Scene*()> scene);
   void Close();
   void Do(std::function<void()>&& f);
-  void SetScene(std::shared_ptr<Scene> newScene);
+  void SetScene(std::function<Scene*()> newScene);
   void MainLoop();
   ~Window();
   static Window& Instance() { assert(staticWindow); return *staticWindow; }
