@@ -8,7 +8,7 @@
 
 Material::Material(const std::string& str) {
   enum { Unknown, Name, Ambient, Diffuse, Specular, SpecularExponent } state = Unknown;
-  size_t index = 0;
+  int index = 0;
   for (const auto& s : split(str)) {
     if (s == "newmtl") state = Name;
     else if (s == "Ka") { state = Ambient; index = 0; }

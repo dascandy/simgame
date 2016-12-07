@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <memory>
 
 class MapTile {
   
@@ -13,7 +14,7 @@ public:
   size_t w, h;
   MapTile& operator()(size_t x, size_t y);
 private:
-  MapTile *mapTile;
+  std::unique_ptr<MapTile[]> mapTile;
 };
 
 

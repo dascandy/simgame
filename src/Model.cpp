@@ -47,9 +47,8 @@ Model* Model::Get(const char* name) {
   static std::unordered_map<std::string, std::unique_ptr<Model>> models;
   auto& i = models[name];
   if (!i) {
-    i.reset(new Model(std::string("assets/models/") + name + ".obj"));
+    i = std::make_unique<Model>(std::string("assets/models/") + name + ".obj");
   }
   return i.get();
 }
-
 
