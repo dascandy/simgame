@@ -20,6 +20,8 @@ const char* vs =
 "#version 330\n"
 "in vec3 in_loc;\n"
 "in vec3 in_nrm;\n"
+"uniform mat4 mat_mvp;\n"
+"\n"
 "void main() {\n"
 "   gl_Position = vec4(in_loc, 1);\n"
 "}\n"
