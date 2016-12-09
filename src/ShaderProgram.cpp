@@ -6,7 +6,7 @@ static inline void compileShader(const std::string &filename, int prog, int &sha
     shader = glCreateShader(type);
     glAttachShader(prog, shader);
 
-    glShaderSource(shader, 1, (const char **)source, NULL);
+    glShaderSource(shader, 1, source, NULL);
     glCompileShader(shader);
     int ok = true;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &ok);
