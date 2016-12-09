@@ -32,7 +32,7 @@ Window::Window(const std::string& name, size_t x, size_t y, std::function<Scene*
   staticWindow = this;
   glfwSetErrorCallback(error_callback);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
   myWindow = glfwCreateWindow((int)x, (int)y, name.c_str(), nullptr, nullptr);
   if (!myWindow) {
     throw std::runtime_error("Cannot create window");
