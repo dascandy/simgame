@@ -2,7 +2,7 @@
 
 cpp-dependencies --regen
 cd build
-cmake -G "Unix Makefiles" ..
-make -j8
+cmake -G Ninja ..
+ninja
 cd ..
 

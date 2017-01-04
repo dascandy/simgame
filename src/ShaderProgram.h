@@ -17,6 +17,7 @@ public:
     void Set(const char *name, unsigned int value);
     void Set(const char *name, float value);
     void Set(const char *name, const glm::vec3 &value);
+    void SetUBO(const char* name, int binding_index);
 private:
     std::string filename;
     int getUniformLocation(const char *name);

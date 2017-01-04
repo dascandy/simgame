@@ -123,4 +123,9 @@ int ShaderProgram::getUniformLocation(const char *name) {
     return value;
 }
 
+void ShaderProgram::SetUBO(const char* name, int binding_index) {
+    unsigned int block_index = glGetUniformBlockIndex(prog, name);
+    glUniformBlockBinding(prog, block_index, binding_index);
+}
+
 

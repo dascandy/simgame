@@ -1,8 +1,7 @@
 #include "Window.h"
 #include <GLAD/glad.h>
 #include <GLFW/glfw3.h>
-
-Window* Window::staticWindow;
+#include <iostream>
 
 #pragma comment(lib, "glfw3.lib")
 
@@ -24,15 +23,18 @@ void error_callback(int error, const char* description) {
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
   if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
     glfwSetWindowShouldClose(window, GLFW_TRUE);
+  Window* win = (Window*)glfwGetWindowUserPointer(window);
+  win->scene->OnKeypress(key, scancode, action, mods);
 }
 
-Window::Window(const std::string& name, size_t x, size_t y, std::function<Scene*()> scene)
+Window::Window(const std::string& name, size_t x, size_t y)
+: w(w)
+, h(h)
 {
   static GlfwInit init;
-  staticWindow = this;
   glfwSetErrorCallback(error_callback);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
   myWindow = glfwCreateWindow((int)x, (int)y, name.c_str(), nullptr, nullptr);
   if (!myWindow) {
     throw std::runtime_error("Cannot create window");
@@ -40,8 +42,14 @@ Window::Window(const std::string& name, size_t x, size_t y, std::function<Scene*
   glfwMakeContextCurrent((GLFWwindow*)myWindow);
   gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
   glfwSetKeyCallback((GLFWwindow*)myWindow, key_callback);
+  glfwSetFramebufferSizeCallback((GLFWwindow*)myWindow, [](GLFWwindow* winptr, int x, int y) {
+    Window* win = (Window*)glfwGetWindowUserPointer(winptr);
+    win->w = x;
+    win->h = y;
+    win->scene->Resize(x, y);
+  });
   glfwSwapInterval(1);
-  this->scene.reset(scene());
+  glfwSetWindowUserPointer((GLFWwindow*)myWindow, this);
 }
 
 void Window::Close() {
@@ -49,7 +57,7 @@ void Window::Close() {
 }
 
 void Window::SetScene(std::function<Scene*()> newScene) {
-  Do([newScene, this]{ scene.reset(newScene()); });
+  Do([newScene, this]{ scene.reset(newScene()); scene->Resize(w, h); });
 }
 
 void Window::MainLoop() {
@@ -73,7 +81,11 @@ void Window::MainLoop() {
       scene->Update(timeCounter - startTime);
     }
     scene->Render();
-
+    int err = glGetError();
+    if (err != 0) {
+      std::cerr << err << "\n";
+      std::terminate();
+    }
     glfwSwapBuffers((GLFWwindow*)myWindow);
   }
   myWindow = nullptr;
@@ -82,7 +94,6 @@ void Window::MainLoop() {
 }
 
 Window::~Window() {
-  staticWindow = nullptr;
 }
 
 void Window::Do(std::function<void()> &&f) {

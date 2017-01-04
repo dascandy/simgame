@@ -11,17 +11,17 @@
 
 class Window {
 public:
-  Window(const std::string& name, size_t x, size_t y, std::function<Scene*()> scene);
+  Window(const std::string& name, size_t x, size_t y);
   void Close();
   void Do(std::function<void()>&& f);
   void SetScene(std::function<Scene*()> newScene);
   void MainLoop();
   ~Window();
-  static Window& Instance() { assert(staticWindow); return *staticWindow; }
 private:
-  static Window* staticWindow;
   void* myWindow;
+  size_t w, h;
   LockedQueue<std::function<void()>> pendingTasks;
+public:
   std::shared_ptr<Scene> scene;
 };
 

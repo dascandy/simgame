@@ -1,12 +1,17 @@
-#include "Material.h"
+#include <GLAD/glad.h>
 #include <vector>
 #include <unordered_map>
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include "Material.h"
 #include "StringUtils.h"
 
-Material::Material(const std::string& str) {
+unsigned int Material::ubo;
+
+Material::Material(const std::string& str, uint8_t id) 
+: id(id)
+{
   enum { Unknown, Name, Ambient, Diffuse, Specular, SpecularExponent } state = Unknown;
   int index = 0;
   for (const auto& s : split(str)) {
@@ -38,16 +43,35 @@ Material::Material(const std::string& str) {
   }
 }
 
+struct gpu_material {
+  glm::vec4 ambient, diffuse, specular;
+};
+
+static_assert(sizeof(gpu_material) == 48);
+
 Material* Material::Get(const char* name) {
   static std::unordered_map<std::string, std::unique_ptr<Material>> mats;
   if (mats.empty()) {
+    uint8_t curid = 0;
+    std::vector<gpu_material> gpu_mats;
     std::ifstream mtlFile("assets/allmtls.mt");
     while (mtlFile.good()) {
       std::string line;
       std::getline(mtlFile, line);
-      std::unique_ptr<Material> mat = std::make_unique<Material>(line);
+      std::unique_ptr<Material> mat = std::make_unique<Material>(line, curid++);
+      gpu_material gm;
+      gm.ambient = glm::vec4(mat->ambient.x, mat->ambient.y, mat->ambient.z, 0);
+      gm.diffuse = glm::vec4(mat->diffuse.x, mat->diffuse.y, mat->diffuse.z, 0);
+      gm.specular = glm::vec4(mat->specular.x, mat->specular.y, mat->specular.z, mat->specExponent);
+      gpu_mats.push_back(gm);
       mats[mat->name] = std::move(mat);
     }
+
+    gpu_mats.resize(64);
+    glGenBuffers(1, &ubo);
+    glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+    glBufferData(GL_UNIFORM_BUFFER, sizeof(gpu_material) * gpu_mats.size(), gpu_mats.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
   }
   auto it = mats.find(name);
   if (it == mats.end()) {

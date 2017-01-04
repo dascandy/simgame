@@ -6,7 +6,8 @@ class Vertex {
 public:
   glm::vec3 pos;
   glm::vec3 normal;
-  float padding[2];
+  uint8_t material;
+  uint8_t pad[7];
 };
 
 static_assert(sizeof(Vertex) == 32, "Vertex is not as it should be");
