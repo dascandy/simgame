@@ -7,7 +7,7 @@ class Model;
 class Object {
 public:
   Object(Model* model, glm::vec3 pos, glm::quat rot);
-private:
+public:
   Model* model;
   glm::vec3 pos;
   glm::quat rot;

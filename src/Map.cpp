@@ -3,8 +3,8 @@
 #include "Model.h"
 #include "Drawcall.h"
 #include <glm/gtc/matrix_transform.hpp>
- 
-class Object;
+#include <glm/gtx/quaternion.hpp>
+#include "Object.h"
 
 int heightmap[] = {
   4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 
@@ -58,6 +58,7 @@ struct MapTileType {
     Water,
     Grass,
     Rock,
+    Sidewalk,
   } covertype = Grass;
   char coverToC(uint8_t type) {
     switch (type) {
@@ -117,7 +118,10 @@ public:
   uint16_t x, y;
   MapTileType type;
   Model* model;
-  std::vector<Object*> staticObjects;
+  void AddObject(std::unique_ptr<Object> obj) {
+    staticObjects.push_back(std::move(obj));
+  }
+  std::vector<std::unique_ptr<Object>> staticObjects;
   int rotation;
   uint8_t h;
   void resolve() {
@@ -125,9 +129,18 @@ public:
     model = Model::Get("tiles/" + type.toString());
   }
   void getDrawcalls(glm::mat4 vp, std::vector<Drawcall>& calls) {
-    calls.push_back(Drawcall{glm::rotate(glm::translate(vp, glm::vec3(x*21, h*5, y*21)), (float)((5-rotation) * M_PI / 2), glm::vec3(0, 1, 0)), model->start, model->length});
+    calls.push_back(Drawcall{glm::rotate(glm::translate(vp, glm::vec3(x*20, h*5, y*20)), (float)((5-rotation) * M_PI / 2), glm::vec3(0, 1, 0)), model->start, model->length});
     for (auto& o : staticObjects) {
-      // do something
+      calls.push_back(Drawcall{glm::toMat4(o->rot) * glm::translate(vp, o->pos), o->model->start, o->model->length});
+    }
+  }
+  float getHeight(float x, float y) {
+    switch(type.h) {
+      case 0x0000: return h*5;
+      case 0x0001: 
+      case 0x0011:
+      case 0x0111: return h * 5 + 5;
+      default: fprintf(stderr, "%04X\n", type.h); assert(false);
     }
   }
 };
@@ -167,6 +180,60 @@ void Map::PlaceRoadY(size_t start, size_t end, size_t x) {
   }
 }
 
+static const char* getRandomTree() {
+  const char* trees[] = {
+    "models/naturePack_051",
+    "models/naturePack_052",
+    "models/naturePack_053",
+    "models/naturePack_054",
+    "models/naturePack_055",
+    "models/naturePack_056",
+    "models/naturePack_061",
+    "models/naturePack_062",
+    "models/naturePack_063",
+    "models/naturePack_064",
+    "models/naturePack_065",
+    "models/naturePack_066",
+    "models/naturePack_067",
+    "models/naturePack_068",
+    "models/naturePack_069",
+    "models/naturePack_070",
+    "models/naturePack_071",
+    "models/naturePack_072",
+    "models/naturePack_073",
+    "models/naturePack_074",
+    "models/naturePack_081",
+    "models/naturePack_084",
+    "models/naturePack_085",
+    "models/naturePack_087",
+    "models/naturePack_088",
+    "models/naturePack_089",
+    "models/naturePack_094",
+    "models/naturePack_114",
+    "models/naturePack_129",
+    "models/naturePack_130",
+    "models/naturePack_139",
+    "models/naturePack_140",
+    "models/naturePack_148",
+    "models/naturePack_149",
+    "models/naturePack_150",
+    "models/naturePack_151",
+    "models/naturePack_159",
+    "models/naturePack_160",
+    "models/naturePack_161",
+    "models/naturePack_162",
+    "models/naturePack_163",
+    "models/naturePack_164",
+    "models/naturePack_165",
+    "models/naturePack_166",
+    "models/naturePack_167",
+    "models/naturePack_168",
+    "models/naturePack_169",
+  };
+  size_t count = sizeof(trees) / sizeof(trees[0]);
+  return trees[rand() % count];
+}
+
 Map::Map(size_t w, size_t h)
 : w(w)
 , h(h)
@@ -188,6 +255,18 @@ Map::Map(size_t w, size_t h)
   for (auto& tile : mapTile) {
     tile.resolve();
   }
+  for (size_t n = 0; n < 500; n++) {
+    float x = rand() % 640, y = rand() % 640;
+    AddObject(std::make_unique<Object>(Model::Get(getRandomTree()), glm::vec3(x, getHeightAt(x, y), y), glm::quat()));
+  }
+  AddObject(std::make_unique<Object>(Model::Get("models/basicCharacter"), glm::vec3(320, getHeightAt(320, 320), 320), glm::quat()));
+}
+
+void Map::AddObject(std::unique_ptr<Object> obj) {
+  size_t xoff = size_t(obj->pos.x / 20);
+  size_t yoff = size_t(obj->pos.y / 20);
+  auto& tile = mapTile[yoff * w + xoff];
+  tile.AddObject(std::move(obj));
 }
 
 Map::~Map() {}
@@ -200,6 +279,14 @@ MapTile& Map::operator()(size_t x, size_t y) {
 
 glm::vec2 Map::getCenter() {
   return glm::vec2(w*10, h*10);
+}
+
+float Map::getHeightAt(float x, float y) {
+  size_t xoff = size_t(x / 20);
+  size_t yoff = size_t(y / 20);
+  auto& tile = mapTile[yoff * w + xoff];
+  float xd = x - xoff * 20, yd = y - yoff * 20;
+  return tile.getHeight(xd, yd);
 }
 
 void Map::getMapDrawcalls(glm::mat4 vp, std::vector<Drawcall>& calls) {
