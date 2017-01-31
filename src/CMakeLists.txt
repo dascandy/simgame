@@ -10,6 +10,7 @@ project(src)
 
 add_executable(${PROJECT_NAME}
   Drawcall.h
+  Fixed.h
   Font.cpp
   Font.h
   GameScene.cpp
@@ -19,6 +20,8 @@ add_executable(${PROJECT_NAME}
   LockedQueue.h
   Map.cpp
   Map.h
+  Markov.cpp
+  Markov.h
   Material.cpp
   Material.h
   Model.cpp
@@ -26,6 +29,7 @@ add_executable(${PROJECT_NAME}
   Object.cpp
   Object.h
   Scene.h
+  Server.h
   ShaderProgram.cpp
   ShaderProgram.h
   StringUtils.cpp
@@ -39,7 +43,7 @@ add_executable(${PROJECT_NAME}
 )
 
 target_include_directories(${PROJECT_NAME}
-  PRIVATE
+  PUBLIC
     .
 )
 
