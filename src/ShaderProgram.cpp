@@ -1,5 +1,5 @@
 #include "ShaderProgram.h"
-#include <GLAD/glad.h>
+#include <glad.h>
 
 static inline void compileShader(const std::string &filename, int prog, int &shader, const char **source, int type)
 {

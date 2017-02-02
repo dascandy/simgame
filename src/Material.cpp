@@ -1,4 +1,4 @@
-#include <GLAD/glad.h>
+#include <glad.h>
 #include <vector>
 #include <unordered_map>
 #include <fstream>

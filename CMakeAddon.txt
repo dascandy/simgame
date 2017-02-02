@@ -1,2 +1,16 @@
 add_compile_options(-std=c++14 -g)
 
+function(add_unittest)
+  add_custom_command(
+    OUTPUT ${PROJECT_BINARY_DIR}/testrun.log
+    COMMAND $<TARGET_FILE:${PROJECT_NAME}> >${PROJECT_BINARY_DIR}/testrun.log
+    DEPENDS $<TARGET_FILE:${PROJECT_NAME}>
+  )
+  add_custom_target(${PROJECT_NAME}.run DEPENDS ${PROJECT_BINARY_DIR}/testrun.log)
+  if (NOT TARGET unittests)
+    add_custom_target(unittests)
+  endif()
+  add_dependencies(unittests ${PROJECT_NAME}.run)
+endfunction()
+
+

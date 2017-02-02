@@ -4,7 +4,7 @@
 #include "Material.h"
 #include <unordered_map>
 #include <memory>
-#include <GLAD/glad.h>
+#include <glad.h>
 
 static void AddFace(std::vector<Vertex>& v, Material* m, const std::vector<glm::vec3>& positions, const std::vector<glm::vec3>& normals, const std::string& v1, const std::string& v2, const std::string& v3) {
   auto v1d = split(v1, '/', false),
