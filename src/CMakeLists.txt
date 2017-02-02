@@ -8,7 +8,7 @@
 project(src)
 
 
-add_executable(${PROJECT_NAME}
+add_library(${PROJECT_NAME} STATIC
   Drawcall.h
   Fixed.h
   Font.cpp
@@ -38,7 +38,6 @@ add_executable(${PROJECT_NAME}
   Window.cpp
   Window.h
   glad.cpp
-  main.cpp
   view.h
 )
 

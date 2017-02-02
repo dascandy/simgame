@@ -8,8 +8,10 @@
 project(unittest)
 
 
-add_library(${PROJECT_NAME} STATIC
+add_executable(${PROJECT_NAME}
   Fixed.cpp
+  test.cpp
+  test.h
 )
 
 target_link_libraries(${PROJECT_NAME}
