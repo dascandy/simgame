@@ -11,9 +11,9 @@ ensure_installed libglfw3-dev
 ensure_installed libglm-dev
 
 cpp-dependencies --regen
+mkdir -p build
 cd build
 cmake -G Ninja ..
-ninja
-ninja unittests
+ninja all unittests
 cd ..
 
