@@ -8,6 +8,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 include(CMakeAddon.txt)
+add_subdirectory(build)
 add_subdirectory(game)
 add_subdirectory(shaders)
 add_subdirectory(src)
