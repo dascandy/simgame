@@ -76,4 +76,9 @@ public:
   }
 };
 
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+
+using vec3f = glm::tvec3<Fixed>;
+using quatf = glm::tquat<Fixed>;
 
