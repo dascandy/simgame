@@ -16,31 +16,31 @@ public:
     value += f.value;
     return *this;
   }
-  Fixed operator+(const Fixed& f) {
+  Fixed operator+(const Fixed& f) const {
     Fixed rv;
     rv.value = value + f.value;
     return rv;
   }
-  Fixed operator-(const Fixed& f) {
+  Fixed operator-(const Fixed& f) const {
     Fixed rv;
     rv.value = value - f.value;
     return rv;
   }
-  Fixed operator*(const Fixed& f) {
+  Fixed operator*(const Fixed& f) const {
     __int128 val = f.value;
     val *= value;
     return Fixed{raw, static_cast<int64_t>(val >> 32)};
   }
-  Fixed operator/(const Fixed& f) {
+  Fixed operator/(const Fixed& f) const {
     __int128 val = value;
     val <<= 32;
     val /= f.value;
     return Fixed{raw, static_cast<int64_t>(val)};
   }
-  bool operator==(const Fixed& f) {
+  bool operator==(const Fixed& f) const {
     return f.value == value;
   }
-  int highestbit(uint64_t val) {
+  int highestbit(uint64_t val) const {
     int offs = 0;
     if ((val >> offs) & 0xFFFFFFFF00000000ULL) { offs += 32; }
     if ((val >> offs) & 0x00000000FFFF0000ULL) { offs += 16; }
@@ -50,7 +50,10 @@ public:
     if ((val >> offs) & 0x0000000000000002ULL) { offs += 1; }
     return ((val >> offs) & 1) ? offs : -1;
   }
-  double ToDouble() {
+  int ToInt() const {
+    return int(value >> 32);
+  }
+  double ToDouble() const {
     bool negative = false;
     uint64_t val = (uint64_t)value;
     if (val & 0x8000000000000000ULL) {

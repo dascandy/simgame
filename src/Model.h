@@ -6,12 +6,15 @@
 #include <vector>
 #include "Vertex.h"
 class Material;
+struct CollisionMesh;
 
 class Model {
 public:
   Model(const std::string& str);
+  Model(CollisionMesh* mesh) : mesh(mesh) {}
   static Model* Get(const std::string& str);
   uint16_t start, length;
+  CollisionMesh* mesh;
   class Buffer {
   private:
     Buffer();
