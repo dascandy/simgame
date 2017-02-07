@@ -26,6 +26,11 @@ public:
     rv.value = value - f.value;
     return rv;
   }
+  Fixed operator-() const {
+    Fixed rv = *this;
+    rv.value = -rv.value;
+    return rv;
+  }
   Fixed operator*(const Fixed& f) const {
     __int128 val = f.value;
     val *= value;
@@ -77,6 +82,12 @@ public:
     conv.u = (negative ? 0x8000000000000000ULL : 0) + (exponent << 52) + (val & 0xFFFFFFFFFFFFFULL);
     return conv.d;
   }
+  bool operator>=(const Fixed& f) { return value >= f.value; }
+  bool operator<=(const Fixed& f) { return value <= f.value; }
+  bool operator!=(const Fixed& f) { return value != f.value; }
+  bool operator==(const Fixed& f) { return value == f.value; }
+  bool operator> (const Fixed& f) { return value >  f.value; }
+  bool operator< (const Fixed& f) { return value <  f.value; }
 };
 
 #include <glm/glm.hpp>
