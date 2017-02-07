@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdint.h>
-#include <stdio.h>
+#include <iostream>
 
 class Fixed {
 public:
@@ -84,4 +84,20 @@ public:
 
 using vec3f = glm::tvec3<Fixed>;
 using quatf = glm::tquat<Fixed>;
+
+inline std::ostream& operator<<(std::ostream& os, const Fixed& f) {
+  os << f.ToDouble();
+  return os;
+}
+
+inline std::ostream& operator<<(std::ostream& os, const vec3f& f) {
+  os << "(vec " << f.x << "," << f.y << "," << f.z << ")";
+  return os;
+}
+
+inline std::ostream& operator<<(std::ostream& os, const quatf& f) {
+  os << "(vec " << f.x << "," << f.y << "," << f.z << "," << f.w << ")";
+  return os;
+}
+
 

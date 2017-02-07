@@ -5,7 +5,7 @@
 #include "Object.h"
 
 TEST(sphereFallsToGroundInTimeXWithNormalGravity) {
-  PhysicsWorld world(Fixed(1) / 20);
+  PhysicsWorld world(60);
   BoundingSphere sphere(1);
   Model model(&sphere);
   Object obj(&model, vec3f(0, 0, 40), quatf());
