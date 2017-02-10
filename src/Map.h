@@ -2,7 +2,6 @@
 
 #include <cstddef>
 #include <memory>
-#include "view.h"
 #include <vector>
 #include <glm/glm.hpp>
 

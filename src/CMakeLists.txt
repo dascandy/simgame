@@ -41,7 +41,6 @@ add_library(${PROJECT_NAME} STATIC
   Window.h
   glad.cpp
   glad.h
-  view.h
 )
 
 target_include_directories(${PROJECT_NAME}
