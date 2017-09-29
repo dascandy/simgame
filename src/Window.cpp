@@ -57,7 +57,10 @@ void Window::Close() {
 }
 
 void Window::SetScene(std::function<Scene*()> newScene) {
-  Do([newScene, this]{ scene.reset(newScene()); scene->Resize(w, h); });
+  Do([newScene, this]{ 
+    scene.reset(newScene()); 
+    if (scene) scene->Resize(w, h); 
+  });
 }
 
 void Window::MainLoop() {

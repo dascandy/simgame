@@ -9,6 +9,7 @@ project(src)
 
 
 add_library(${PROJECT_NAME} STATIC
+  Drawcall.cpp
   Drawcall.h
   Font.cpp
   Font.h
@@ -16,6 +17,7 @@ add_library(${PROJECT_NAME} STATIC
   GameScene.h
   GameState.cpp
   GameState.h
+  LockedQueue.cpp
   LockedQueue.h
   Map.cpp
   Map.h
@@ -27,17 +29,19 @@ add_library(${PROJECT_NAME} STATIC
   Model.h
   Object.cpp
   Object.h
+  Scene.cpp
   Scene.h
-  Server.h
   ShaderProgram.cpp
   ShaderProgram.h
   StringUtils.cpp
   StringUtils.h
+  Vertex.cpp
   Vertex.h
   Window.cpp
   Window.h
   glad.cpp
   glad.h
+  glm.cpp
   glm.h
 )
 

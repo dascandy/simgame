@@ -18,7 +18,6 @@ int main() {
   GameState state;
   win.SetScene([&state]{ return new GameScene(&state); });
   win.MainLoop();
-  // TODO: Make this a bit less crappy than *this*.
-  _exit(0);
+  win.SetScene([]{ return nullptr; });
 }
 
