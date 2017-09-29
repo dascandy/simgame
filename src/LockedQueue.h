@@ -12,8 +12,7 @@ public:
   }
   void pop_all(std::vector<T>& otherQueue) {
     std::lock_guard<std::mutex> l(m);
-    if (!queue.empty())
-      swap(queue, otherQueue);
+    swap(queue, otherQueue);
   }
 private:
   std::mutex m;

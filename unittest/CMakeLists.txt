@@ -9,15 +9,8 @@ project(unittest)
 
 
 add_executable(${PROJECT_NAME}
-  Fixed.cpp
-  physics.cpp
   test.cpp
   test.h
-)
-
-target_link_libraries(${PROJECT_NAME}
-  PRIVATE
-    src
 )
 
 include(CMakeAddon.txt)

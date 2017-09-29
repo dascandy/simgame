@@ -1,4 +1,4 @@
-#version 330
+#version 430
 in vec3 in_loc;
 in vec3 in_nrm;
 in vec4 in_prop;
@@ -6,13 +6,15 @@ in vec4 in_prop;
 out vec3 f_nrm;
 out vec3 f_col;
 
+struct Material {
+  vec4 ambient;
+  vec4 diffuse;
+  vec4 specular;
+};
+
 uniform mat4 mat_mvp;
 layout(std140) uniform materials {
-  struct {
-    vec4 ambient;
-    vec4 diffuse;
-    vec4 specular;
-  } mats[64];
+  Material mats[64];
 };
 
 void main() {

@@ -17,7 +17,7 @@ static inline void compileShader(const std::string &filename, int prog, int &sha
         char buffer[1024];
         glGetShaderInfoLog(shader, length, NULL, buffer);
         buffer[length] = 0;
-        fprintf(stderr, "ERROR:\n%s\n", buffer);
+        fprintf(stderr, "ERROR compiling %s. Source:\n%s\nError %s\n", filename.c_str(), source[0], buffer);
         throw 42;
     }
 }

@@ -1,21 +1,21 @@
 #pragma once
 
-#include "Fixed.h"
+#include <glm.h>
+
 class Model;
 
 class Object {
 public:
-  Object(Model* model, vec3f pos, quatf rot);
-  void AddForce(vec3f force);
-  void StepPhysics(Fixed step);
+  Object(Model* model, vec3 pos, quat rot);
+  void AddForce(vec3 force);
 public:
   Model* model;
-  vec3f p0;
-  quatf r0;
-  vec3f p1;
-  quatf r1;
-  vec3f p2;
-  quatf r2;
-  Fixed mass;
+  vec3 p0;
+  quat r0;
+  vec3 p1;
+  quat r1;
+  vec3 p2;
+  quat r2;
+  float mass;
 };
 

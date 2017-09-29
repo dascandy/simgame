@@ -10,7 +10,6 @@ project(src)
 
 add_library(${PROJECT_NAME} STATIC
   Drawcall.h
-  Fixed.h
   Font.cpp
   Font.h
   GameScene.cpp
@@ -28,8 +27,6 @@ add_library(${PROJECT_NAME} STATIC
   Model.h
   Object.cpp
   Object.h
-  Physics.cpp
-  Physics.h
   Scene.h
   Server.h
   ShaderProgram.cpp
@@ -41,6 +38,7 @@ add_library(${PROJECT_NAME} STATIC
   Window.h
   glad.cpp
   glad.h
+  glm.h
 )
 
 target_include_directories(${PROJECT_NAME}

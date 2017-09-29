@@ -2,8 +2,7 @@
 #include <assert.h>
 #include "Model.h"
 #include "Drawcall.h"
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/quaternion.hpp>
+#include <glm.h>
 #include "Object.h"
 
 int heightmap[] = {
@@ -131,9 +130,11 @@ public:
   void getDrawcalls(glm::mat4 vp, std::vector<Drawcall>& calls) {
     calls.push_back(Drawcall{glm::rotate(glm::translate(vp, glm::vec3(x*20, h*5, y*20)), (float)((5-rotation) * M_PI / 2), glm::vec3(0, 1, 0)), model->start, model->length});
     for (auto& o : staticObjects) {
+  /*
       glm::vec3 p(o->p0.x.ToDouble(), o->p0.y.ToDouble(), o->p0.z.ToDouble());
       glm::quat r(o->r0.x.ToDouble(), o->r0.y.ToDouble(), o->r0.z.ToDouble(), o->r0.w.ToDouble());
       calls.push_back(Drawcall{glm::toMat4(r) * glm::translate(vp, p), o->model->start, o->model->length});
+*/
     }
   }
   float getHeight(float x, float y) {
@@ -265,12 +266,14 @@ Map::Map(size_t w, size_t h)
 }
 
 void Map::AddObject(std::unique_ptr<Object> obj) {
+/*
   int xoff = int(obj->p0.x.ToInt() / 20);
   int yoff = int(obj->p0.y.ToInt() / 20);
   assert(xoff > 0 && xoff < w);
   assert(yoff > 0 && yoff < h);
   auto& tile = mapTile[yoff * w + xoff];
   tile.AddObject(std::move(obj));
+*/
 }
 
 Map::~Map() {}

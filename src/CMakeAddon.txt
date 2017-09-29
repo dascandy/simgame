@@ -16,4 +16,13 @@ endif()
 target_link_libraries(${PROJECT_NAME}
   PRIVATE
     shaders
+    BulletDynamics
+    BulletCollision
+    LinearMath
+
+)
+
+target_include_directories(${PROJECT_NAME}
+  PUBLIC
+    /usr/include/bullet
 )

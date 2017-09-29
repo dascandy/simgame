@@ -27,15 +27,15 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
   win->scene->OnKeypress(key, scancode, action, mods);
 }
 
-Window::Window(const std::string& name, size_t x, size_t y)
+Window::Window(const std::string& name, size_t w, size_t h)
 : w(w)
 , h(h)
 {
   static GlfwInit init;
   glfwSetErrorCallback(error_callback);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-  myWindow = glfwCreateWindow((int)x, (int)y, name.c_str(), nullptr, nullptr);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  myWindow = glfwCreateWindow((int)w, (int)h, name.c_str(), nullptr, nullptr);
   if (!myWindow) {
     throw std::runtime_error("Cannot create window");
   }

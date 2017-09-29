@@ -1,12 +1,18 @@
 #pragma once
 
 #include "Map.h"
-#include "Physics.h"
+#include <bullet/btBulletDynamicsCommon.h>
+
 
 class GameState {
 public:
   GameState();
   Map map;
-  PhysicsWorld world;
+  btDbvtBroadphase broadphase;
+  btDefaultCollisionConfiguration collisionConfiguration;
+  btCollisionDispatcher dispatcher;
+  btSequentialImpulseConstraintSolver solver;
+  btDiscreteDynamicsWorld dynamicsWorld;
+
 };
 
