@@ -18,6 +18,7 @@ public:
   void MainLoop();
   ~Window();
 private:
+  void DebugWindow();
   void* myWindow;
   size_t w, h;
   LockedQueue<std::function<void()>> pendingTasks;

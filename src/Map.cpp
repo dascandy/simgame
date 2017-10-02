@@ -270,8 +270,8 @@ Map::Map(size_t w, size_t h)
 void Map::AddObject(std::unique_ptr<Object> obj) {
   int xoff = int(obj->getPosition().x / 20);
   int yoff = int(obj->getPosition().y / 20);
-  assert(xoff > 0 && xoff < w);
-  assert(yoff > 0 && yoff < h);
+  assert(xoff >= 0 && xoff < w);
+  assert(yoff >= 0 && yoff < h);
   auto& tile = mapTile[yoff * w + xoff];
   tile.AddObject(std::move(obj));
 }

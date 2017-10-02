@@ -2,7 +2,7 @@
 #include <glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-
+#include <imgui_impl_glfw_gl3.h>
 #pragma comment(lib, "glfw3.lib")
 
 class GlfwInit {
@@ -50,9 +50,11 @@ Window::Window(const std::string& name, size_t w, size_t h)
   });
   glfwSwapInterval(1);
   glfwSetWindowUserPointer((GLFWwindow*)myWindow, this);
+  ImGui_ImplGlfwGL3_Init((GLFWwindow*)myWindow, true);
 }
 
 void Window::Close() {
+  ImGui_ImplGlfwGL3_Shutdown();
   glfwSetWindowShouldClose((GLFWwindow*)myWindow, GLFW_TRUE);
 }
 
@@ -61,6 +63,10 @@ void Window::SetScene(std::function<Scene*()> newScene) {
     scene.reset(newScene()); 
     if (scene) scene->Resize(w, h); 
   });
+}
+
+void Window::DebugWindow() {
+  ImGui::Text("Hello, world!");
 }
 
 void Window::MainLoop() {
@@ -89,6 +95,17 @@ void Window::MainLoop() {
       std::cerr << err << "\n";
       std::terminate();
     }
+
+    ImGui_ImplGlfwGL3_NewFrame();
+    DebugWindow();
+    // Rendering
+    int display_w, display_h;
+    glfwGetFramebufferSize((GLFWwindow*)myWindow, &display_w, &display_h);
+    glViewport(0, 0, display_w, display_h);
+    glClearColor(0, 0, 0, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+    ImGui::Render();
+
     glfwSwapBuffers((GLFWwindow*)myWindow);
   }
   myWindow = nullptr;

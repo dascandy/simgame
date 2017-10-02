@@ -57,7 +57,7 @@ Model::Model(const std::string& str)
     }
   }
 
-  if (physicsmodel[1] == "sphere") {
+  if (!physicsmodel.empty() && physicsmodel[1] == "sphere") {
     shape = std::make_unique<btSphereShape>(strtof(physicsmodel[2].c_str(), nullptr));
   } else {
     // Default fallback, just make a hull shape around the vertices & call it a day.
