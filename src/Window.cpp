@@ -50,11 +50,10 @@ Window::Window(const std::string& name, size_t w, size_t h)
   });
   glfwSwapInterval(1);
   glfwSetWindowUserPointer((GLFWwindow*)myWindow, this);
-  ImGui_ImplGlfwGL3_Init((GLFWwindow*)myWindow, true);
+  ImGui_ImplGlfwGL3_Init((GLFWwindow*)myWindow, false);
 }
 
 void Window::Close() {
-  ImGui_ImplGlfwGL3_Shutdown();
   glfwSetWindowShouldClose((GLFWwindow*)myWindow, GLFW_TRUE);
 }
 
@@ -102,12 +101,11 @@ void Window::MainLoop() {
     int display_w, display_h;
     glfwGetFramebufferSize((GLFWwindow*)myWindow, &display_w, &display_h);
     glViewport(0, 0, display_w, display_h);
-    glClearColor(0, 0, 0, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
     ImGui::Render();
 
     glfwSwapBuffers((GLFWwindow*)myWindow);
   }
+  ImGui_ImplGlfwGL3_Shutdown();
   myWindow = nullptr;
   glfwMakeContextCurrent(nullptr);
   glfwDestroyWindow((GLFWwindow*)myWindow);

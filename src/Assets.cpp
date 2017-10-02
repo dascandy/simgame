@@ -53,8 +53,6 @@ const char* Assets::getRandomTree() {
   };
   size_t count = sizeof(trees) / sizeof(trees[0]);
   uint32_t treeId = std::uniform_int_distribution<uint32_t>(0, count-1)(mt);
-  fprintf(stderr, "treeid = %u\n", treeId);
-  fprintf(stderr, "tree = %s\n", trees[treeId]);
   return trees[treeId];
 }
 
