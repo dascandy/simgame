@@ -4,7 +4,10 @@
 #include "Material.h"
 #include <unordered_map>
 #include <memory>
+#include <mutex>
 #include <glad.h>
+#include <random>
+#include <bullet/BulletCollision/CollisionShapes/btShapeHull.h>
 
 static void AddFace(std::vector<Vertex>& v, Material* m, const std::vector<glm::vec3>& positions, const std::vector<glm::vec3>& normals, const std::string& v1, const std::string& v2, const std::string& v3) {
   auto v1d = split(v1, '/', false),
@@ -17,10 +20,14 @@ static void AddFace(std::vector<Vertex>& v, Material* m, const std::vector<glm::
   v.push_back(Vertex{positions[atoi(v3d[0].c_str())-1], normals[atoi(v3d[2].c_str())-1], m->id});
 }
 
-Model::Model(const std::string& str) {
+Model::Model(const std::string& str) 
+: mass(0.0f)
+, masssd(0.0f)
+{
   std::vector<Vertex> v;
   std::vector<glm::vec3> positions;
   std::vector<glm::vec3> normals;
+  std::vector<std::string> physicsmodel;
   Material* mat = nullptr;
 
   std::ifstream f(str);
@@ -30,7 +37,13 @@ Model::Model(const std::string& str) {
     std::getline(f, line);
     auto p = split(line);
     if (p.size() == 0) continue;
-    if (p[0] == "usemtl") {
+    if (p[0] == "physmodel") {
+      physicsmodel = p;
+    } else if (p[0] == "mass") {
+      mass = strtof(p[1].c_str(), nullptr);
+    } else if (p[0] == "masssd") {
+      masssd = strtof(p[1].c_str(), nullptr);
+    } else if (p[0] == "usemtl") {
       mat = Material::Get(p[1].c_str());
     } else if (p[0] == "v") {
       positions.emplace_back(strtof(p[1].c_str(), nullptr), strtof(p[2].c_str(), nullptr), strtof(p[3].c_str(), nullptr));
@@ -44,17 +57,50 @@ Model::Model(const std::string& str) {
     }
   }
 
+  if (physicsmodel[1] == "sphere") {
+    shape = std::make_unique<btSphereShape>(strtof(physicsmodel[2].c_str(), nullptr));
+  } else {
+    // Default fallback, just make a hull shape around the vertices & call it a day.
+    btTriangleMesh trimesh;
+    for (size_t i = 0; i < v.size(); i+=3)
+    {
+       btVector3 vertex0(v[i].pos.x, v[i].pos.y, v[i].pos.z);
+       btVector3 vertex1(v[i+1].pos.x, v[i+1].pos.y, v[i+1].pos.z);
+       btVector3 vertex2(v[i+2].pos.x, v[i+2].pos.y, v[i+2].pos.z);
+       trimesh.addTriangle(vertex0, vertex1, vertex2);
+    }
+    btConvexTriangleMeshShape tmpShape(&trimesh);
+    btShapeHull hull(&tmpShape);
+    btScalar margin = tmpShape.getMargin();
+    hull.buildHull(margin);
+    shape = std::make_unique<btConvexHullShape>((btScalar*)hull.getVertexPointer(),hull.numVertices());
+  }
+
   start = Buffer::Instance().Add(v);
   length = v.size();
 }
 
-Model* Model::Get(const std::string& name) {
-  static std::unordered_map<std::string, std::unique_ptr<Model>> models;
+btRigidBody::btRigidBodyConstructionInfo Model::Create(btMotionState* motionState) {
+  static std::mt19937 rng;
+
+  std::uniform_real_distribution<float> distr(0, 1.0f);
+  // Sum of three floats gives a good approximation of a normal distribution without the chances of an outlier
+  float a = distr(rng), b = distr(rng), c = distr(rng);
+  float myMass = mass - 3*masssd + 2*masssd * (a + b + c);
+  btVector3 inertia;
+  shape->calculateLocalInertia(myMass, inertia);
+  return btRigidBody::btRigidBodyConstructionInfo(mass, motionState, shape.get(), inertia);
+}
+
+std::shared_ptr<Model> Model::Get(const std::string& name) {
+  static std::mutex m;
+  static std::unordered_map<std::string, std::shared_ptr<Model>> models;
+  std::lock_guard<std::mutex> l(m);
   auto& i = models[name];
   if (!i) {
-    i = std::make_unique<Model>("assets/" + name + ".obj");
+    i = std::make_shared<Model>("assets/" + name + ".obj");
   }
-  return i.get();
+  return i;
 }
 
 Model::Buffer& Model::Buffer::Instance() {

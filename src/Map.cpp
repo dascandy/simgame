@@ -4,6 +4,8 @@
 #include "Drawcall.h"
 #include <glm.h>
 #include "Object.h"
+#include "Assets.h"
+#include "di.h"
 
 int heightmap[] = {
   4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 
@@ -116,7 +118,7 @@ public:
   }
   uint16_t x, y;
   MapTileType type;
-  Model* model;
+  std::shared_ptr<Model> model;
   void AddObject(std::unique_ptr<Object> obj) {
     staticObjects.push_back(std::move(obj));
   }
@@ -129,11 +131,13 @@ public:
   }
   void getDrawcalls(glm::mat4 vp, std::vector<Drawcall>& calls) {
     calls.push_back(Drawcall{glm::rotate(glm::translate(vp, glm::vec3(x*20, h*5, y*20)), (float)((5-rotation) * M_PI / 2), glm::vec3(0, 1, 0)), model->start, model->length});
+/*
     for (auto& o : staticObjects) {
       glm::vec3 p(o->p0.x.ToDouble(), o->p0.y.ToDouble(), o->p0.z.ToDouble());
       glm::quat r(o->r0.x.ToDouble(), o->r0.y.ToDouble(), o->r0.z.ToDouble(), o->r0.w.ToDouble());
       calls.push_back(Drawcall{glm::toMat4(r) * glm::translate(vp, p), o->model->start, o->model->length});
     }
+*/
   }
   float getHeight(float x, float y) {
     switch(type.h) {
@@ -258,20 +262,18 @@ Map::Map(size_t w, size_t h)
   }
   for (size_t n = 0; n < 500; n++) {
     float x = rand() % 640, y = rand() % 640;
-    AddObject(std::make_unique<Object>(Model::Get(getRandomTree()), glm::vec3(x, getHeightAt(x, y), y), glm::quat()));
+    AddObject(std::make_unique<Object>(Model::Get(DI::Get<Assets>()->getRandomTree()), glm::vec3(x, getHeightAt(x, y), y), glm::quat()));
   }
   AddObject(std::make_unique<Object>(Model::Get("models/basicCharacter"), glm::vec3(320, getHeightAt(320, 320), 320), glm::quat()));
 }
 
 void Map::AddObject(std::unique_ptr<Object> obj) {
-/*
-  int xoff = int(obj->p0.x.ToInt() / 20);
-  int yoff = int(obj->p0.y.ToInt() / 20);
+  int xoff = int(obj->getPosition().x / 20);
+  int yoff = int(obj->getPosition().y / 20);
   assert(xoff > 0 && xoff < w);
   assert(yoff > 0 && yoff < h);
   auto& tile = mapTile[yoff * w + xoff];
   tile.AddObject(std::move(obj));
-*/
 }
 
 Map::~Map() {}

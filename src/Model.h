@@ -4,17 +4,21 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <memory>
 #include "Vertex.h"
+#include <bullet/btBulletDynamicsCommon.h>
 class Material;
 struct CollisionMesh;
 
 class Model {
 public:
   Model(const std::string& str);
-  Model(CollisionMesh* mesh) : mesh(mesh) {}
-  static Model* Get(const std::string& str);
+//:  Model(CollisionMesh* mesh) : mesh(mesh) {}
+  static std::shared_ptr<Model> Get(const std::string& str);
+  btRigidBody::btRigidBodyConstructionInfo Create(btMotionState* motionState);
   uint16_t start, length;
-  CollisionMesh* mesh;
+  std::unique_ptr<btCollisionShape> shape;
+  float mass, masssd;
   class Buffer {
   private:
     Buffer();

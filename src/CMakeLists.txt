@@ -9,6 +9,10 @@ project(src)
 
 
 add_library(${PROJECT_NAME} STATIC
+  Assets.cpp
+  Assets.h
+  di.cpp
+  di.h
   Drawcall.cpp
   Drawcall.h
   Font.cpp
