@@ -21,5 +21,7 @@ project(shaders)
 add_resource_library(${PROJECT_NAME}
   gamescene.frag
   gamescene.vert
+  bulletdebug.frag
+  bulletdebug.vert
 )
 

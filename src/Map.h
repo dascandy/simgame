@@ -15,11 +15,10 @@ public:
   ~Map();
   size_t w, h;
   MapTile& operator()(size_t x, size_t y);
-  void getMapDrawcalls(glm::mat4 vp, std::vector<Drawcall>&);
+  void getDrawcalls(glm::mat4 vp, std::vector<Drawcall>&);
   void PlaceRoadX(size_t, size_t, size_t);
   void PlaceRoadY(size_t, size_t, size_t);
   void AddObject(std::unique_ptr<Object> obj);
-  glm::vec2 getCenter();
   float getHeightAt(float x, float y);
 private:
   std::vector<MapTile> mapTile;

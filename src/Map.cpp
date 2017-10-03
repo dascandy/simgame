@@ -185,60 +185,6 @@ void Map::PlaceRoadY(size_t start, size_t end, size_t x) {
   }
 }
 
-static const char* getRandomTree() {
-  const char* trees[] = {
-    "models/naturePack_051",
-    "models/naturePack_052",
-    "models/naturePack_053",
-    "models/naturePack_054",
-    "models/naturePack_055",
-    "models/naturePack_056",
-    "models/naturePack_061",
-    "models/naturePack_062",
-    "models/naturePack_063",
-    "models/naturePack_064",
-    "models/naturePack_065",
-    "models/naturePack_066",
-    "models/naturePack_067",
-    "models/naturePack_068",
-    "models/naturePack_069",
-    "models/naturePack_070",
-    "models/naturePack_071",
-    "models/naturePack_072",
-    "models/naturePack_073",
-    "models/naturePack_074",
-    "models/naturePack_081",
-    "models/naturePack_084",
-    "models/naturePack_085",
-    "models/naturePack_087",
-    "models/naturePack_088",
-    "models/naturePack_089",
-    "models/naturePack_094",
-    "models/naturePack_114",
-    "models/naturePack_129",
-    "models/naturePack_130",
-    "models/naturePack_139",
-    "models/naturePack_140",
-    "models/naturePack_148",
-    "models/naturePack_149",
-    "models/naturePack_150",
-    "models/naturePack_151",
-    "models/naturePack_159",
-    "models/naturePack_160",
-    "models/naturePack_161",
-    "models/naturePack_162",
-    "models/naturePack_163",
-    "models/naturePack_164",
-    "models/naturePack_165",
-    "models/naturePack_166",
-    "models/naturePack_167",
-    "models/naturePack_168",
-    "models/naturePack_169",
-  };
-  size_t count = sizeof(trees) / sizeof(trees[0]);
-  return trees[rand() % count];
-}
-
 Map::Map(size_t w, size_t h)
 : w(w)
 , h(h)
@@ -284,10 +230,6 @@ MapTile& Map::operator()(size_t x, size_t y) {
   return mapTile[y*w+x];
 }
 
-glm::vec2 Map::getCenter() {
-  return glm::vec2(w*10, h*10);
-}
-
 float Map::getHeightAt(float x, float y) {
   size_t xoff = size_t(x / 20);
   size_t yoff = size_t(y / 20);
@@ -296,7 +238,7 @@ float Map::getHeightAt(float x, float y) {
   return tile.getHeight(xd, yd);
 }
 
-void Map::getMapDrawcalls(glm::mat4 vp, std::vector<Drawcall>& calls) {
+void Map::getDrawcalls(glm::mat4 vp, std::vector<Drawcall>& calls) {
   for (auto& tile : mapTile) {
     tile.getDrawcalls(vp, calls);
   }

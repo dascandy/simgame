@@ -6,11 +6,13 @@
 #include "GameState.h"
 #include "Model.h"
 #include "Material.h"
+#include "Settings.h"
+#include "di.h"
 
 extern const char gamescene_vert[];
 extern const char gamescene_frag[];
 
-const char*invars[] = {
+static const char*invars[] = {
   "in_loc",
   "in_nrm",
   "in_prop",
@@ -63,18 +65,23 @@ void GameScene::Render() {
   glBindBufferBase(GL_UNIFORM_BUFFER, 0, Material::GetBuffer());
   std::vector<Drawcall> calls;
   glm::mat4 p = glm::perspective(1.0, (double)ratio, 1.0, 10000.0);
-  glm::vec2 mapcenter = state->map.getCenter();
+  glm::vec2 mapcenter = state->getCenter();
+  // TODO: get a decent form of camera going.
   glm::mat4 v = glm::mat4()
           * glm::rotate(glm::mat4(), -(float)M_PI/3, glm::vec3(1.0f, 0.0f, 0.0f))
           * glm::rotate(glm::mat4(), (float)M_PI/2, glm::vec3(1.0f, 0.0f, 0.0f)) 
           * glm::rotate(glm::mat4(), r, glm::vec3(0.0f, 1.0f, 0.0f)) 
           * glm::translate(glm::mat4(), glm::vec3(xy.x - mapcenter.x, -h, xy.y - mapcenter.y))
           ;
-  state->map.getMapDrawcalls(p*v, calls);
+  state->getDrawcalls(p*v, calls);
   Model::Buffer::Instance().Bind();
   for (auto& d : calls) {
     shader.Set("mat_mvp", d.mvp);
     glDrawArrays(GL_TRIANGLES, d.offset, d.length);
+  }
+
+  if (DI::Get<Settings>()->debugBullet) {
+    state->DebugDrawBullet(p*v);
   }
 }
 

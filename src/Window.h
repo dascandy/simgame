@@ -23,8 +23,6 @@ private:
   void* myWindow;
   size_t w, h;
   LockedQueue<std::function<void()>> pendingTasks;
-  bool debugWindow = false;
-  bool bulletDebug = false;
 public:
   std::shared_ptr<Scene> scene;
 };

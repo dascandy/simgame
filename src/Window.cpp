@@ -2,6 +2,8 @@
 #include <glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include "Settings.h"
+#include "di.h"
 #include <imgui_impl_glfw_gl3.h>
 #pragma comment(lib, "glfw3.lib")
 
@@ -29,8 +31,8 @@ void Window::keyCallback(int key, int scancode, int action, int mods) {
   if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
     glfwSetWindowShouldClose((GLFWwindow*)myWindow, GLFW_TRUE);
   } else if (key == GLFW_KEY_GRAVE_ACCENT && action == GLFW_PRESS) {
-    debugWindow = !debugWindow;
-  } else if (debugWindow) {
+    DI::Get<Settings>()->debugWindow = !DI::Get<Settings>()->debugWindow;
+  } else if (DI::Get<Settings>()->debugWindow) {
     ImGui_ImplGlfwGL3_KeyCallback((GLFWwindow*)myWindow, key, scancode, action, mods);
   } else {
     scene->OnKeypress(key, scancode, action, mods);
@@ -75,10 +77,10 @@ void Window::SetScene(std::function<Scene*()> newScene) {
 }
 
 void Window::DebugWindow() {
-  if (debugWindow) {
+  if (DI::Get<Settings>()->debugWindow) {
     ImGui_ImplGlfwGL3_NewFrame();
 
-    ImGui::Checkbox("Bullet debug drawing", &bulletDebug);
+    ImGui::Checkbox("Bullet debug drawing", &DI::Get<Settings>()->debugBullet);
 
     int display_w, display_h;
     glfwGetFramebufferSize((GLFWwindow*)myWindow, &display_w, &display_h);
@@ -112,10 +114,6 @@ void Window::MainLoop() {
     if (err != 0) {
       std::cerr << err << "\n";
       std::terminate();
-    }
-
-    if (bulletDebug) {
-      // do something with bullet
     }
 
     DebugWindow();
