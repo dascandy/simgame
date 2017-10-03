@@ -128,7 +128,7 @@ Model::Buffer::~Buffer() {
 
 void Model::Buffer::Bind() {
   glBindVertexArray(vao);
-  //glBindBuffer(GL_ARRAY_BUFFER, vbo);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);
 }
 
 size_t Model::Buffer::Add(const std::vector<Vertex>& v) {
