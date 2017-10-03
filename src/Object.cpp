@@ -3,7 +3,7 @@
 
 Object::Object(std::shared_ptr<Model> model, vec3 pos, quat rot) 
 : model(model)
-, motionState(btTransform(btQuaternion(rot.w, rot.x, rot.y, rot.z), btVector3(pos.x, pos.y, pos.z)))
+, motionState(btTransform(btQuaternion(rot.x, rot.y, rot.z, rot.w), btVector3(pos.x, pos.y, pos.z)))
 , rigidBody(model->Create(&motionState))
 {}
 
@@ -21,7 +21,7 @@ vec3 Object::getPosition() {
 quat Object::getRotation() {
   btTransform trans;
   motionState.getWorldTransform(trans);
-  return quat(trans.getRotation().getX(), trans.getRotation().getY(), trans.getRotation().getZ(), trans.getRotation().getW());
+  return quat(trans.getRotation().getW(), trans.getRotation().getX(), trans.getRotation().getY(), trans.getRotation().getZ());
 }
 
 
