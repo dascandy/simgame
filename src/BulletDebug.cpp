@@ -12,32 +12,36 @@ void BulletDebug::drawLine(const btVector3& from, const btVector3& to, const btV
 
 void BulletDebug::drawLine(const btVector3& from, const btVector3& to, const btVector3& color) 
 {
-
+  uint32_t c = (uint8_t(color.x() * 255) << 16) | (uint8_t(color.y() * 255) << 8) | (uint8_t(color.z() * 255) << 0);
+  verticesLine.push_back(vert{vec3(from.x(), from.y(), from.z()), c});
+  verticesLine.push_back(vert{vec3(to.x(), to.y(), to.z()), c});
 }
 
-void BulletDebug::drawSphere(const btVector3& p, btScalar radius, const btVector3& color) 
+void BulletDebug::drawSphere(const btVector3& /*p*/, btScalar /*radius*/, const btVector3& /*color*/) 
 {
 
 }
 
-void BulletDebug::drawTriangle(const btVector3& a, const btVector3& b, const btVector3& c, const btVector3& color, btScalar alpha) 
+void BulletDebug::drawTriangle(const btVector3& a, const btVector3& b, const btVector3& c, const btVector3& color, btScalar /*alpha*/) 
 {
-
+  uint32_t col = (uint8_t(color.x() * 255) << 16) | (uint8_t(color.y() * 255) << 8) | (uint8_t(color.z() * 255) << 0);
+  verticesTri.push_back(vert{vec3(a.x(), a.y(), a.z()), col});
+  verticesTri.push_back(vert{vec3(b.x(), b.y(), b.z()), col});
+  verticesTri.push_back(vert{vec3(c.x(), c.y(), c.z()), col});
 }
 
-void BulletDebug::drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color) 
+void BulletDebug::drawContactPoint(const btVector3& /*PointOnB*/, const btVector3& /*normalOnB*/, btScalar /*distance*/, int /*lifeTime*/, const btVector3& /*color*/) 
 {
-
+  
 }
 
 void BulletDebug::reportErrorWarning(const char* warningString) 
 {
-
+  fprintf(stderr, "%s\n", warningString);
 }
 
-void BulletDebug::draw3dText(const btVector3& location, const char* textString) 
+void BulletDebug::draw3dText(const btVector3& /*location*/, const char* /*textString*/) 
 {
-
 }
 
 void BulletDebug::Render(glm::mat4 vp) 

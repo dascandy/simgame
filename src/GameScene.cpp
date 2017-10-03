@@ -32,13 +32,13 @@ GameScene::~GameScene() {}
 
 static bool pressed[128];
 
-void GameScene::OnKeypress(int key, int scancode, int action, int mods) {
+void GameScene::OnKeypress(int key, int , int action, int ) {
   pressed[key] = (action);
 }
 
 static float h = 24, r = M_PI / 4;
 static glm::vec2 xy;
-void GameScene::Update(size_t frameno) {
+void GameScene::Update(size_t /*frameno*/) {
   if (pressed[GLFW_KEY_Q]) h += 0.1f;
   if (pressed[GLFW_KEY_E]) h -= 0.1f;
   if (pressed[GLFW_KEY_A]) xy += glm::vec2(0.1f*cos(r), 0.1f*sin(r));

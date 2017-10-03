@@ -8,6 +8,7 @@ Object::Object(std::shared_ptr<Model> model, vec3 pos, quat rot)
 {}
 
 void Object::AddForce(vec3 force) {
+  (void)force;
 //  p2 += force / mass;
 }
 

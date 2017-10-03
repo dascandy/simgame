@@ -5,7 +5,6 @@
 #include "Settings.h"
 #include "di.h"
 #include <imgui_impl_glfw_gl3.h>
-#pragma comment(lib, "glfw3.lib")
 
 class GlfwInit {
 public:
@@ -19,7 +18,7 @@ public:
 };
 
 void error_callback(int error, const char* description) {
-  fprintf(stderr, "Error: %s\n", description);
+  fprintf(stderr, "Error %d: %s\n", error, description);
 }
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {

@@ -11,8 +11,8 @@ public:
   void AddForce(vec3 force);
   vec3 getPosition();
   quat getRotation();
-private:
   std::shared_ptr<Model> model;
+private:
   btDefaultMotionState motionState;
   btRigidBody rigidBody;
 };
