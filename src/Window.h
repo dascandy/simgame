@@ -15,6 +15,7 @@ public:
   void Close();
   void Do(std::function<void()>&& f);
   void SetScene(std::function<Scene*()> newScene);
+  void keyCallback(int key, int scancode, int action, int mods);
   void MainLoop();
   ~Window();
 private:
@@ -22,6 +23,8 @@ private:
   void* myWindow;
   size_t w, h;
   LockedQueue<std::function<void()>> pendingTasks;
+  bool debugWindow = false;
+  bool bulletDebug = false;
 public:
   std::shared_ptr<Scene> scene;
 };

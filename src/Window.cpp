@@ -21,10 +21,20 @@ void error_callback(int error, const char* description) {
 }
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-  if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-    glfwSetWindowShouldClose(window, GLFW_TRUE);
   Window* win = (Window*)glfwGetWindowUserPointer(window);
-  win->scene->OnKeypress(key, scancode, action, mods);
+  win->keyCallback(key, scancode, action, mods);
+}
+
+void Window::keyCallback(int key, int scancode, int action, int mods) {
+  if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+    glfwSetWindowShouldClose((GLFWwindow*)myWindow, GLFW_TRUE);
+  } else if (key == GLFW_KEY_GRAVE_ACCENT && action == GLFW_PRESS) {
+    debugWindow = !debugWindow;
+  } else if (debugWindow) {
+    ImGui_ImplGlfwGL3_KeyCallback((GLFWwindow*)myWindow, key, scancode, action, mods);
+  } else {
+    scene->OnKeypress(key, scancode, action, mods);
+  }
 }
 
 Window::Window(const std::string& name, size_t w, size_t h)
@@ -65,7 +75,16 @@ void Window::SetScene(std::function<Scene*()> newScene) {
 }
 
 void Window::DebugWindow() {
-  ImGui::Text("Hello, world!");
+  if (debugWindow) {
+    ImGui_ImplGlfwGL3_NewFrame();
+
+    ImGui::Checkbox("Bullet debug drawing", &bulletDebug);
+
+    int display_w, display_h;
+    glfwGetFramebufferSize((GLFWwindow*)myWindow, &display_w, &display_h);
+    glViewport(0, 0, display_w, display_h);
+    ImGui::Render();
+  }
 }
 
 void Window::MainLoop() {
@@ -95,13 +114,11 @@ void Window::MainLoop() {
       std::terminate();
     }
 
-    ImGui_ImplGlfwGL3_NewFrame();
+    if (bulletDebug) {
+      // do something with bullet
+    }
+
     DebugWindow();
-    // Rendering
-    int display_w, display_h;
-    glfwGetFramebufferSize((GLFWwindow*)myWindow, &display_w, &display_h);
-    glViewport(0, 0, display_w, display_h);
-    ImGui::Render();
 
     glfwSwapBuffers((GLFWwindow*)myWindow);
   }
