@@ -24,6 +24,7 @@ void BulletDebug::drawSphere(const btVector3& /*p*/, btScalar /*radius*/, const 
 
 void BulletDebug::drawTriangle(const btVector3& a, const btVector3& b, const btVector3& c, const btVector3& color, btScalar /*alpha*/) 
 {
+  fprintf(stderr, "%s:%d\n", __FILE__, __LINE__);
   uint32_t col = (uint8_t(color.x() * 255) << 16) | (uint8_t(color.y() * 255) << 8) | (uint8_t(color.z() * 255) << 0);
   verticesTri.push_back(vert{vec3(a.x(), a.y(), a.z()), col});
   verticesTri.push_back(vert{vec3(b.x(), b.y(), b.z()), col});
@@ -46,6 +47,7 @@ void BulletDebug::draw3dText(const btVector3& /*location*/, const char* /*textSt
 
 void BulletDebug::Render(glm::mat4 vp) 
 {
+  glClear(GL_DEPTH_BUFFER_BIT);
   shader.SetActive();
   glBindVertexArray(vao);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -59,6 +61,7 @@ void BulletDebug::Render(glm::mat4 vp)
   shader.Set("mat_mvp", vp);
   glDrawArrays(GL_LINES, 0, numLine);
   glDrawArrays(GL_TRIANGLES, numLine, numTri);
+  fprintf(stderr, "%zu %zu\n", numLine, numTri);
 }
 
 extern const char bulletdebug_vert[];

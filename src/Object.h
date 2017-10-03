@@ -14,6 +14,7 @@ public:
   std::shared_ptr<Model> model;
 private:
   btDefaultMotionState motionState;
+  public:
   btRigidBody rigidBody;
 };
 

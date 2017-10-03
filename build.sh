@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 ensure_installed() {
   TO_INSTALL=$(dpkg -s $1 2>/dev/null | grep Status.*installed | wc -l)
   if [ $TO_INSTALL -eq 0 ]; then 

@@ -119,9 +119,6 @@ public:
   uint16_t x, y;
   MapTileType type;
   std::shared_ptr<Model> model;
-  void AddObject(std::unique_ptr<Object> obj) {
-    staticObjects.push_back(std::move(obj));
-  }
   std::vector<std::unique_ptr<Object>> staticObjects;
   int rotation;
   uint8_t h;
@@ -202,20 +199,6 @@ Map::Map(size_t w, size_t h)
   for (auto& tile : mapTile) {
     tile.resolve();
   }
-  for (size_t n = 0; n < 500; n++) {
-    float x = rand() % 640, y = rand() % 640;
-    AddObject(std::make_unique<Object>(Model::Get(DI::Get<Assets>()->getRandomTree()), glm::vec3(x, getHeightAt(x, y), y), glm::quat()));
-  }
-  AddObject(std::make_unique<Object>(Model::Get("models/basicCharacter"), glm::vec3(320, getHeightAt(320, 320), 320), glm::quat()));
-}
-
-void Map::AddObject(std::unique_ptr<Object> obj) {
-  int xoff = int(obj->getPosition().x / 20);
-  int yoff = int(obj->getPosition().y / 20);
-  assert(xoff >= 0 && xoff < (int)w);
-  assert(yoff >= 0 && yoff < (int)h);
-  auto& tile = mapTile[yoff * w + xoff];
-  tile.AddObject(std::move(obj));
 }
 
 Map::~Map() {}
