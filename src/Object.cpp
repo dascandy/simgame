@@ -21,7 +21,7 @@ vec3 Object::getPosition() {
 quat Object::getRotation() {
   btTransform trans;
   motionState.getWorldTransform(trans);
-  return vec3(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
+  return quat(trans.getRotation().getX(), trans.getRotation().getY(), trans.getRotation().getZ(), trans.getRotation().getW());
 }
 
 
