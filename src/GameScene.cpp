@@ -6,7 +6,7 @@
 #include "GameState.h"
 #include "Model.h"
 #include "Material.h"
-#include "Settings.h"
+#include "BulletDebug.h"
 #include "di.h"
 
 extern const char gamescene_vert[];
@@ -80,7 +80,7 @@ void GameScene::Render() {
     glDrawArrays(GL_TRIANGLES, d.offset, d.length);
   }
 
-  if (DI::Get<Settings>()->debugBullet) {
+  if (DI::Get<BulletDebug>()->getDebugMode() != 0) {
     state->DebugDrawBullet(p*v);
   }
 }

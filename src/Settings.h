@@ -1,7 +1,6 @@
 #pragma once
 
 struct Settings {
-  bool debugBullet = false;
   bool clearDepthBeforeBulletDebug = false;
   bool debugWindow = false;
 

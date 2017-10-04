@@ -79,7 +79,6 @@ void Window::DebugWindow() {
   if (DI::Get<Settings>()->debugWindow) {
     ImGui_ImplGlfwGL3_NewFrame();
 
-    ImGui::Checkbox("Bullet debug drawing", &DI::Get<Settings>()->debugBullet);
     ImGui::Checkbox("Bullet debug in front of game", &DI::Get<Settings>()->clearDepthBeforeBulletDebug);
 
     ImGui::Checkbox("Bullet Wireframe", &DI::Get<Settings>()->bulletWireframe);
