@@ -74,7 +74,6 @@ Model::Model(const std::string& str)
     btScalar margin = tmpShape.getMargin();
     hull.buildHull(margin);
     shape = std::make_unique<btConvexHullShape>((btScalar*)hull.getVertexPointer(),hull.numVertices());
-    fprintf(stderr, "making a fallback hull for %s", str.c_str());
   }
 
   start = Buffer::Instance().Add(v);

@@ -80,6 +80,25 @@ void Window::DebugWindow() {
     ImGui_ImplGlfwGL3_NewFrame();
 
     ImGui::Checkbox("Bullet debug drawing", &DI::Get<Settings>()->debugBullet);
+    ImGui::Checkbox("Bullet debug in front of game", &DI::Get<Settings>()->clearDepthBeforeBulletDebug);
+
+    ImGui::Checkbox("Bullet Wireframe", &DI::Get<Settings>()->bulletWireframe);
+    ImGui::Checkbox("Bullet AABB", &DI::Get<Settings>()->bulletAabb);
+// These exist, but do nothing tangible.
+//    ImGui::Checkbox("Bullet Features text", &DI::Get<Settings>()->bulletFeaturesText);
+//    ImGui::Checkbox("Bullet Contact points", &DI::Get<Settings>()->bulletContactPoints);
+//    ImGui::Checkbox("Bullet No deactication", &DI::Get<Settings>()->bulletNoDeactivation);
+//    ImGui::Checkbox("Bullet No help text", &DI::Get<Settings>()->bulletNoHelpText);
+//    ImGui::Checkbox("Bullet Draw text", &DI::Get<Settings>()->bulletDrawText);
+//    ImGui::Checkbox("Bullet Profile timings", &DI::Get<Settings>()->bulletProfileTimings);
+//    ImGui::Checkbox("Bullet Enable SAT comparison", &DI::Get<Settings>()->bulletEnableSatComparison);
+//    ImGui::Checkbox("Bullet Disable bullet LCP", &DI::Get<Settings>()->bulletDisableBulletLCP);
+//    ImGui::Checkbox("Bullet Enable CCD", &DI::Get<Settings>()->bulletEnableCCD);
+//    ImGui::Checkbox("Bullet Draw constraints", &DI::Get<Settings>()->bulletDrawConstraints);
+//    ImGui::Checkbox("Bullet Draw constraint limits", &DI::Get<Settings>()->bulletDrawConstraintLimits);
+//    ImGui::Checkbox("Bullet Fast wireframe", &DI::Get<Settings>()->bulletFastWireframe);
+//    ImGui::Checkbox("Bullet Draw normals", &DI::Get<Settings>()->bulletDrawNormals);
+//    ImGui::Checkbox("Bullet Draw frames", &DI::Get<Settings>()->bulletDrawFrames);
 
     int display_w, display_h;
     glfwGetFramebufferSize((GLFWwindow*)myWindow, &display_w, &display_h);

@@ -13,7 +13,6 @@ class BulletDebug : public btIDebugDraw
     uint32_t color;
   };
   static_assert(sizeof(vert) == 16);
-  int m_debugMode;
   std::vector<vert> verticesLine;
   std::vector<vert> verticesTri;
   ShaderProgram shader;
@@ -28,8 +27,8 @@ public:
   void drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color) override;
   void reportErrorWarning(const char* warningString) override;
   void draw3dText(const btVector3& location, const char* textString) override;
-  void setDebugMode(int debugMode) override { m_debugMode = debugMode; }
-  int getDebugMode() const override { return m_debugMode; }
+  void setDebugMode(int ) override {}
+  int getDebugMode() const override;
 
   void Render(glm::mat4 vp);
 };

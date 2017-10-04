@@ -1,6 +1,7 @@
 #include "BulletDebug.h"
 #include "glad.h"
 #include "di.h"
+#include "Settings.h"
 
 void BulletDebug::drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor) 
 {
@@ -24,7 +25,6 @@ void BulletDebug::drawSphere(const btVector3& /*p*/, btScalar /*radius*/, const 
 
 void BulletDebug::drawTriangle(const btVector3& a, const btVector3& b, const btVector3& c, const btVector3& color, btScalar /*alpha*/) 
 {
-  fprintf(stderr, "%s:%d\n", __FILE__, __LINE__);
   uint32_t col = (uint8_t(color.x() * 255) << 16) | (uint8_t(color.y() * 255) << 8) | (uint8_t(color.z() * 255) << 0);
   verticesTri.push_back(vert{vec3(a.x(), a.y(), a.z()), col});
   verticesTri.push_back(vert{vec3(b.x(), b.y(), b.z()), col});
@@ -47,7 +47,8 @@ void BulletDebug::draw3dText(const btVector3& /*location*/, const char* /*textSt
 
 void BulletDebug::Render(glm::mat4 vp) 
 {
-  glClear(GL_DEPTH_BUFFER_BIT);
+  if (DI::Get<Settings>()->clearDepthBeforeBulletDebug)
+    glClear(GL_DEPTH_BUFFER_BIT);
   shader.SetActive();
   glBindVertexArray(vao);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -61,7 +62,25 @@ void BulletDebug::Render(glm::mat4 vp)
   shader.Set("mat_mvp", vp);
   glDrawArrays(GL_LINES, 0, numLine);
   glDrawArrays(GL_TRIANGLES, numLine, numTri);
-  fprintf(stderr, "%zu %zu\n", numLine, numTri);
+}
+
+int BulletDebug::getDebugMode() const {
+  return DI::Get<Settings>()->bulletWireframe * 1 +
+         DI::Get<Settings>()->bulletAabb * 2 +
+         DI::Get<Settings>()->bulletFeaturesText * 4 +
+         DI::Get<Settings>()->bulletContactPoints * 8 +
+         DI::Get<Settings>()->bulletNoDeactivation * 16 +
+         DI::Get<Settings>()->bulletNoHelpText * 32 +
+         DI::Get<Settings>()->bulletDrawText * 64 +
+         DI::Get<Settings>()->bulletProfileTimings * 128 +
+         DI::Get<Settings>()->bulletEnableSatComparison * 256 +
+         DI::Get<Settings>()->bulletDisableBulletLCP * 512 +
+         DI::Get<Settings>()->bulletEnableCCD * 1024 +
+         DI::Get<Settings>()->bulletDrawConstraints * 2048 +
+         DI::Get<Settings>()->bulletDrawConstraintLimits * 4096 +
+         DI::Get<Settings>()->bulletFastWireframe * 8192 +
+         DI::Get<Settings>()->bulletDrawNormals * 16384 +
+         DI::Get<Settings>()->bulletDrawFrames * 32768;
 }
 
 extern const char bulletdebug_vert[];
