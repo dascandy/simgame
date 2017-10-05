@@ -11,6 +11,7 @@ ensure_installed() {
 
 ensure_installed libglfw3-dev
 ensure_installed libglm-dev
+ensure_installed libbullet-dev
 
 cpp-dependencies --regen
 mkdir -p build
