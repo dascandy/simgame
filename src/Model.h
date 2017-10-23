@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <random>
 #include "Vertex.h"
 #include <bullet/btBulletDynamicsCommon.h>
 class Material;
@@ -12,13 +13,13 @@ struct CollisionMesh;
 
 class Model {
 public:
-  Model(const std::string& str);
-//:  Model(CollisionMesh* mesh) : mesh(mesh) {}
-  static std::shared_ptr<Model> Get(const std::string& str);
+  Model(const std::vector<Vertex>& vertices, std::mt19937& rng);
+  void CreatePhysicsModel(const std::vector<std::string> &args, const std::vector<Vertex>& v);
   btRigidBody::btRigidBodyConstructionInfo Create(btMotionState* motionState);
   uint16_t start, length;
   std::unique_ptr<btCollisionShape> shape;
   float mass, masssd;
+  std::mt19937& rng;
   class Buffer {
   private:
     Buffer();

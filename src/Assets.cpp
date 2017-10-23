@@ -56,4 +56,76 @@ const char* Assets::getRandomTree() {
   return trees[treeId];
 }
 
+const char* Assets::squareBuildingWithDoor() {
+  static const char* models[] = {
+    "assets/modular/Models/modularBuildings_069.obj",
+    "assets/modular/Models/modularBuildings_053.obj",
+    "assets/modular/Models/modularBuildings_054.obj",
+    "assets/modular/Models/modularBuildings_055.obj",
+    "assets/modular/Models/modularBuildings_028.obj",
+    "assets/modular/Models/modularBuildings_023.obj"
+  };
+  size_t count = sizeof(models) / sizeof(models[0]);
+  uint32_t modelId = std::uniform_int_distribution<uint32_t>(0, count-1)(mt);
+  return models[modelId];
+}
+
+const char* Assets::squareWithWindow() {
+  static const char* models[] = {
+    "assets/modular/Models/modularBuildings_067.obj",
+    "assets/modular/Models/modularBuildings_068.obj",
+    "assets/modular/Models/modularBuildings_063.obj",
+    "assets/modular/Models/modularBuildings_062.obj",
+    "assets/modular/Models/modularBuildings_046.obj",
+    "assets/modular/Models/modularBuildings_047.obj",
+    "assets/modular/Models/modularBuildings_048.obj",
+    "assets/modular/Models/modularBuildings_041.obj",
+    "assets/modular/Models/modularBuildings_040.obj",
+    "assets/modular/Models/modularBuildings_034.obj",
+    "assets/modular/Models/modularBuildings_035.obj",
+    "assets/modular/Models/modularBuildings_036.obj",
+    "assets/modular/Models/modularBuildings_030.obj",
+    "assets/modular/Models/modularBuildings_029.obj",
+    "assets/modular/Models/modularBuildings_028.obj",
+    "assets/modular/Models/modularBuildings_021.obj",
+    "assets/modular/Models/modularBuildings_022.obj",
+    "assets/modular/Models/modularBuildings_023.obj",
+    "assets/modular/Models/modularBuildings_058.obj",
+    "assets/modular/Models/modularBuildings_070.obj",
+    "assets/modular/Models/modularBuildings_071.obj",
+    "assets/modular/Models/modularBuildings_042.obj"
+  };
+  size_t count = sizeof(models) / sizeof(models[0]);
+  uint32_t modelId = std::uniform_int_distribution<uint32_t>(0, count-1)(mt);
+  return models[modelId];
+
+}
+
+const char* Assets::RaisedSquareWithDoor() {
+  static const char* models[] = {
+    "assets/modular/Models/modularBuildings_024.obj",
+    "assets/modular/Models/modularBuildings_025.obj",
+    "assets/modular/Models/modularBuildings_026.obj",
+    "assets/modular/Models/modularBuildings_027.obj"
+  };
+  size_t count = sizeof(models) / sizeof(models[0]);
+  uint32_t modelId = std::uniform_int_distribution<uint32_t>(0, count-1)(mt);
+  return models[modelId];
+}
+/*
+plat dak 
+1x1 11
+2x1 1/1
+3x1 1/13/1
+2x2 8/8/8/8
+2x3 8/9/8 8/9/8
+
+schuin dak
+
+
+verhoging
+vierkant 3/4/5
+
+*/
+
 DEFINE_SERVICE(Assets);

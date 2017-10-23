@@ -5,20 +5,27 @@
 #include "Assets.h"
 #include "Object.h"
 #include "Drawcall.h"
+#include "ModelFactory.h"
 
 GameState::GameState()
-: worldSize(640, 640)
+: worldSize(2560, 2560)
 , map(worldSize.x / 20, worldSize.y / 20)
 , dispatcher(&collisionConfiguration)
 , dynamicsWorld(&dispatcher, &broadphase, &solver, &collisionConfiguration)
 {
   dynamicsWorld.setDebugDrawer(DI::Get<BulletDebug>().get());
   for (size_t n = 0; n < 500; n++) {
-    float x = rand() % 640, y = rand() % 640;
-    AddObject(std::make_unique<Object>(Model::Get(DI::Get<Assets>()->getRandomTree()), glm::vec3(x, map.getHeightAt(x, y), y), glm::quat()));
+    float x = rand() % 2560, y = rand() % 2560;
+    AddObject(std::make_unique<Object>(DI::Get<ModelFactory>()->FromFile(DI::Get<Assets>()->getRandomTree()), glm::vec3(x, map.getHeightAt(x, y), y), glm::quat()));
   }
-  AddObject(std::make_unique<Object>(Model::Get("models/basicCharacter"), glm::vec3(320, map.getHeightAt(320, 320), 320), glm::quat()));
+  AddObject(std::make_unique<Object>(DI::Get<ModelFactory>()->FromFile("models/basicCharacter"), glm::vec3(1280, map.getHeightAt(1280, 1280), 1280), glm::quat()));
   dynamicsWorld.setGravity(btVector3(0, -10, 0));
+  for (size_t x = 0; x < 16; x++) {
+    for (size_t y = 0; y < 16; y++) {
+      auto myObj = std::make_unique<Object>(DI::Get<ModelFactory>()->CreateBuilding(2, 3, 9, 2), glm::vec3(640 + 80 * x, map.getHeightAt(640+80*x, 640+80*y), 640+80*y), glm::quat());
+      AddObject(std::move(myObj));
+    }
+  }
 }
 
 void GameState::AddObject(std::unique_ptr<Object> obj) {
