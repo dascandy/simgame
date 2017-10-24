@@ -17,6 +17,7 @@ Model::Model(const std::vector<Vertex>& v, std::mt19937& rng)
 {
   start = Buffer::Instance().Add(v);
   length = v.size();
+  printf("C %d %d\n", start, length);
 }
 
 void Model::CreatePhysicsModel(const std::vector<std::string> &physicsmodel, const std::vector<Vertex>& v) {
@@ -53,6 +54,7 @@ btRigidBody::btRigidBodyConstructionInfo Model::Create(btMotionState* motionStat
 }
 
 void Model::WriteTo(const std::string& name) {
+  printf("W %d %d\n", start, length);
   std::vector<Vertex> vertices;
   vertices.resize(length);
   Buffer::Instance().Read(start, vertices);

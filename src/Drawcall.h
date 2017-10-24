@@ -5,7 +5,7 @@
 
 struct Drawcall {
   glm::mat4 mvp;
-  uint16_t offset, length;
+  uint32_t offset, length;
 };
 
 

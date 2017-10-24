@@ -17,7 +17,7 @@ public:
   void CreatePhysicsModel(const std::vector<std::string> &args, const std::vector<Vertex>& v);
   void WriteTo(const std::string& name);
   btRigidBody::btRigidBodyConstructionInfo Create(btMotionState* motionState);
-  uint16_t start, length;
+  uint32_t start, length;
   std::unique_ptr<btCollisionShape> shape;
   float mass, masssd;
   std::mt19937& rng;
@@ -25,7 +25,7 @@ public:
   private:
     Buffer();
     ~Buffer();
-    size_t curVertex;
+    uint32_t curVertex;
     unsigned int vbo, vao;
     size_t Add(const std::vector<Vertex>& vertices);
     void Read(size_t start, std::vector<Vertex>& v);

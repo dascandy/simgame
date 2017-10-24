@@ -39,10 +39,12 @@ std::shared_ptr<Model> ModelFactory::CreateBuilding(size_t x, size_t y, size_t v
   auto model = std::make_shared<Model>(vertices, rng);
   std::vector<std::string> physicsmodel = { "physicsmodel", "default" };
   model->CreatePhysicsModel(physicsmodel, vertices);
+  printf("Created building\n");
   return model;
 }
 
 void ModelFactory::Instantiate(std::vector<Vertex>& nv, const char* modelName, float scale, vec3 pos, quat rot) {
+  printf("%s\n", modelName);
   float mass = 0.0f, masssd = 0.0f;
   std::vector<std::string> physicsmodel;
   std::vector<Vertex> ov = loadModelData(modelName, physicsmodel, mass, masssd);

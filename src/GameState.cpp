@@ -25,9 +25,6 @@ GameState::GameState()
       auto houseModel = DI::Get<ModelFactory>()->CreateBuilding(2, 3, 9, 2);
       auto myObj = std::make_unique<Object>(houseModel, glm::vec3(640 + 80 * x, map.getHeightAt(640+80*x, 640+80*y), 640+80*y), glm::quat());
       AddObject(std::move(myObj));
-      char name[20];
-      sprintf(name, "house%zu.obj", y*10+x);
-      houseModel->WriteTo(name);
     }
   }
 }

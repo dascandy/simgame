@@ -8,6 +8,7 @@
 #include "Material.h"
 #include "BulletDebug.h"
 #include "di.h"
+#include "Drawcall.h"
 
 extern const char gamescene_vert[];
 extern const char gamescene_frag[];
@@ -52,11 +53,6 @@ void GameScene::Update(size_t /*frameno*/) {
 void GameScene::Resize(size_t x, size_t y) {
   ratio = x / (float)y;
 }
-
-struct Drawcall {
-  glm::mat4 mvp;
-  uint16_t offset, length;
-};
 
 void GameScene::Render() {
   glClearColor(0, 0, 0.2, 0);
