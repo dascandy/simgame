@@ -49,7 +49,7 @@ struct gpu_material {
 
 static_assert(sizeof(gpu_material) == 48);
 
-Material* Material::Get(const char* name) {
+static std::unordered_map<std::string, std::unique_ptr<Material>> &getAllMaterials() {
   static std::unordered_map<std::string, std::unique_ptr<Material>> mats;
   if (mats.empty()) {
     uint8_t curid = 0;
@@ -68,11 +68,16 @@ Material* Material::Get(const char* name) {
     }
 
     gpu_mats.resize(64);
-    glGenBuffers(1, &ubo);
-    glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+    glGenBuffers(1, &Material::ubo);
+    glBindBuffer(GL_UNIFORM_BUFFER, Material::ubo);
     glBufferData(GL_UNIFORM_BUFFER, sizeof(gpu_material) * gpu_mats.size(), gpu_mats.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
   }
+  return mats;
+}
+
+Material* Material::Get(const char* name) {
+  auto& mats = getAllMaterials();
   auto it = mats.find(name);
   if (it == mats.end()) {
     std::cerr << "Fatal: Unknown material used: " << name << std::endl;
@@ -80,4 +85,14 @@ Material* Material::Get(const char* name) {
   }
   return it->second.get();
 }
+
+Material* Material::Get(uint8_t id) {
+  auto& mats = getAllMaterials();
+  for (const auto& p : mats) {
+    if (p.second->id == id) return p.second.get();
+  }
+  std::cerr << "Fatal: Unknown material used: " << id << std::endl;
+  std::terminate();
+}
+
 

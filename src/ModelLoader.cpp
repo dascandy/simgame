@@ -48,6 +48,7 @@ std::vector<Vertex> loadModelData(const std::string& str, std::vector<std::strin
       }
     }
   }
+  if (v.size() % 3) printf("ERROR IN %s: %zu %zu\n", str.c_str(), v.size(), v.size() % 3);
   return v;
 }
 

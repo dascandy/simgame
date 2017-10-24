@@ -46,7 +46,6 @@ void ModelFactory::Instantiate(std::vector<Vertex>& nv, const char* modelName, f
   float mass = 0.0f, masssd = 0.0f;
   std::vector<std::string> physicsmodel;
   std::vector<Vertex> ov = loadModelData(modelName, physicsmodel, mass, masssd);
-  printf("%zu vertices\n", ov.size());
   for (auto& vert : ov) {
     nv.push_back(Vertex{(scale * vert.pos) * rot + pos, vert.normal * rot, vert.material});
   }

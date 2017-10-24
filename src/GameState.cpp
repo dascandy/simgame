@@ -22,8 +22,12 @@ GameState::GameState()
   dynamicsWorld.setGravity(btVector3(0, -10, 0));
   for (size_t x = 0; x < 16; x++) {
     for (size_t y = 0; y < 16; y++) {
-      auto myObj = std::make_unique<Object>(DI::Get<ModelFactory>()->CreateBuilding(2, 3, 9, 2), glm::vec3(640 + 80 * x, map.getHeightAt(640+80*x, 640+80*y), 640+80*y), glm::quat());
+      auto houseModel = DI::Get<ModelFactory>()->CreateBuilding(2, 3, 9, 2);
+      auto myObj = std::make_unique<Object>(houseModel, glm::vec3(640 + 80 * x, map.getHeightAt(640+80*x, 640+80*y), 640+80*y), glm::quat());
       AddObject(std::move(myObj));
+      char name[20];
+      sprintf(name, "house%zu.obj", y*10+x);
+      houseModel->WriteTo(name);
     }
   }
 }

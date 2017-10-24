@@ -28,6 +28,7 @@ public:
     size_t curVertex;
     unsigned int vbo, vao;
     size_t Add(const std::vector<Vertex>& vertices);
+    void Read(size_t start, std::vector<Vertex>& v);
   public:
     static Buffer& Instance();
     void Bind();

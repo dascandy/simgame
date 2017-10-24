@@ -56,7 +56,22 @@ void Model::WriteTo(const std::string& name) {
   std::vector<Vertex> vertices;
   vertices.resize(length);
   Buffer::Instance().Read(start, vertices);
-  std::ofstream(name).write(vertices.data(), vertices.size());
+  FILE* os = fopen(name.c_str(), "wt");
+  size_t lastMaterial = 256;
+  size_t index = 0;
+  for (auto v : vertices) {
+    if (v.material != lastMaterial) {
+      lastMaterial = v.material;
+      fprintf(os, "usemtl %s\n", Material::Get(lastMaterial)->name.c_str());
+    }
+    fprintf(os, "v %f %f %f\n", v.pos.x, v.pos.y, v.pos.z);
+    fprintf(os, "vn %f %f %f\n", v.normal.x, v.normal.y, v.normal.z);
+    index++;
+    if (index % 3 == 0) {
+      fprintf(os, "f %zu//%zu %zu//%zu %zu//%zu\n", index-2, index-2, index-1, index-1, index, index);
+    }
+  }
+  fclose(os);
 }
 
 Model::Buffer& Model::Buffer::Instance() {
