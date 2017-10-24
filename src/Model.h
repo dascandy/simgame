@@ -15,6 +15,7 @@ class Model {
 public:
   Model(const std::vector<Vertex>& vertices, std::mt19937& rng);
   void CreatePhysicsModel(const std::vector<std::string> &args, const std::vector<Vertex>& v);
+  void WriteTo(const std::string& name);
   btRigidBody::btRigidBodyConstructionInfo Create(btMotionState* motionState);
   uint16_t start, length;
   std::unique_ptr<btCollisionShape> shape;

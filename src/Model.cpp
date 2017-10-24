@@ -52,6 +52,13 @@ btRigidBody::btRigidBodyConstructionInfo Model::Create(btMotionState* motionStat
   return btRigidBody::btRigidBodyConstructionInfo(mass, motionState, shape.get(), inertia);
 }
 
+void Model::WriteTo(const std::string& name) {
+  std::vector<Vertex> vertices;
+  vertices.resize(length);
+  Buffer::Instance().Read(start, vertices);
+  std::ofstream(name).write(vertices.data(), vertices.size());
+}
+
 Model::Buffer& Model::Buffer::Instance() {
   static Buffer buffer;
   return buffer;
@@ -87,6 +94,11 @@ size_t Model::Buffer::Add(const std::vector<Vertex>& v) {
   assert(curVertex <= 1000000);
   glBufferSubData(GL_ARRAY_BUFFER, start * sizeof(Vertex), v.size() * sizeof(Vertex), v.data());
   return start;
+}
+
+void Model::Buffer::Read(size_t start, std::vector<Vertex>& v) {
+  Bind();
+  glGetBufferSubData(GL_ARRAY_BUFFER, start * sizeof(Vertex), v.size() * sizeof(Vertex), v.data());
 }
 
 
