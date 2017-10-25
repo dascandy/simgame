@@ -74,7 +74,7 @@ const char* Assets::squareWithWindow() {
   static const char* models[] = {
     "assets/modular/Models/modularBuildings_067.obj",
     "assets/modular/Models/modularBuildings_068.obj",
-    "assets/modular/Models/modularBuildings_063.obj",
+    "assets/modular/Models/modularBuildings_061.obj",
     "assets/modular/Models/modularBuildings_062.obj",
     "assets/modular/Models/modularBuildings_046.obj",
     "assets/modular/Models/modularBuildings_047.obj",

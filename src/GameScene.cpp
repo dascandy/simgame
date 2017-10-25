@@ -34,7 +34,8 @@ GameScene::~GameScene() {}
 static bool pressed[128];
 
 void GameScene::OnKeypress(int key, int , int action, int ) {
-  pressed[key] = (action);
+  if (action == GLFW_RELEASE) pressed[key] = false;
+  else if (action == GLFW_PRESS) pressed[key] = true;
 }
 
 static float h = 24, r = M_PI / 4;
